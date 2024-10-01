@@ -1,0 +1,49 @@
+.noCursor{
+  caret-color: transparent;
+}
+
+.lightBlueBackground{
+  background-color: #bdddfc;
+}
+
+.form-control.lightBlueBackground {
+  background-color: #bdddfc ;
+  color: #384959;  
+}
+
+.form-control.lightBlueBackground:focus{
+  background-color: #88bdf2 ;
+  color: #384959;
+}
+
+.form-control.lightBlueBackground::placeholder{
+  background-color: #bdddfc ;
+  color: #384959;
+  font-size: 12px;
+}
+
+.btn-primary.lightBlueButton{
+  background-color: #bdddfc ;
+  color: #384959;
+  border: #bdddfc;
+}
+
+.btn-primary.lightBlueButton:hover{
+  background-color: #bdddfc ;
+  color: #384959;
+  border: #88bdf2;
+}
+
+p.display-5.textStyle{
+  font-size:medium;
+  color: #384959;
+}
+
+.signInPageBackground{
+  background-image: url('Images/doctors.png');
+  background-size: cover; /* Cover the entire area */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  height: 100vh; /* Full viewport height (adjust as needed) */
+  width: 100%; /* Full width */
+}
