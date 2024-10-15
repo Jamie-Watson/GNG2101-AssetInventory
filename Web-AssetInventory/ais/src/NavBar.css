@@ -1,0 +1,17 @@
+.noCursor{
+    caret-color: transparent;
+}
+
+.btn-primary.lightBlueButton{
+    background-color: #bdddfc ;
+    color: #384959;
+    border: #bdddfc;
+    padding: 10px 20px;
+    min-width: 170px;
+  }
+  
+.btn-primary.lightBlueButton:hover{
+    background-color: #bdddfc ;
+    color: #384959;
+    border: #88bdf2;
+}

@@ -41,9 +41,9 @@ p.display-5.textStyle{
 
 .signInPageBackground{
   background-image: url('Images/doctors.png');
-  background-size: cover; /* Cover the entire area */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  height: 100vh; /* Full viewport height (adjust as needed) */
-  width: 100%; /* Full width */
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  height: 100vh; 
+  width: 100%; 
 }
