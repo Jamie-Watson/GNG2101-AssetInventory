@@ -1,0 +1,43 @@
+.blueContainer{
+    background-color: #b6c6d4 ;
+    min-height: 75vh;
+    border-radius: 8px;
+}
+.searchPageContainer{
+    background-color: #FCFCFC ;
+    min-height: 100vh;
+    min-width: 100%;
+}
+
+.addRemoveButton{
+    background-color: #81B2e2 ;
+    min-width: 170px;
+    border-color: #81B2e2;
+}
+
+.addRemoveButton:hover{
+    background-color: #6A9BC4 ;
+    min-width: 170px;
+    border-color:#6A9BC4;
+}
+
+.result-container {
+    max-height: 50vh;
+    overflow-y: auto; 
+    display: flex;
+    flex-wrap: wrap; 
+    padding: 10px; 
+    border: 1px solid #ddd; 
+    background-color: #f9f9f9; 
+}
+
+.btn-lg {
+    font-size: 1.25rem; 
+    padding: 10px 20px;
+}
+
+.searchBox{
+    background-color: #FCFCFC;
+    min-height:60vh;
+    border-radius: 8px;
+}
