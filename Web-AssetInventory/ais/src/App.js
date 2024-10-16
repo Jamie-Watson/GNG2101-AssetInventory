@@ -8,15 +8,18 @@ import React from 'react';
 import { useState } from 'react';
 
 function App() {
+  const[username, setUsername]=useState("");
   const [isSignedIn, setIsSignedIn] = useState(false);
 
-  const handleSignIn = () => {
+  const handleSignIn = (currentUsername) => {
     setIsSignedIn(true);
+    setUsername(currentUsername);
+    console.log(currentUsername);
   };
 
   return (
     <>
-      {isSignedIn ? <SearchPage /> : <SignInPage onSignIn={handleSignIn} />}
+      {isSignedIn ? <SearchPage username={username}/> : <SignInPage onSignIn={handleSignIn} />}
     </>
   );
 }

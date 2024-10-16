@@ -5,10 +5,10 @@ import "./SearchPage.css"
 import SearchPageItemBar from './SearchPageItemBar';
 import SearchBox from './SearchBox';
 
-export default function SearchPage(){
+export default function SearchPage({username}){
     return(
         <div className="container searchPageContainer">
-             <Navbar username="John Doe"/>
+             <Navbar username={username}/>
              <div className="container blueContainer">
                 <div className="row">
                     <SearchPageItemBar/>

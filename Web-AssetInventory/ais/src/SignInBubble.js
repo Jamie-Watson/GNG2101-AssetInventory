@@ -15,7 +15,7 @@ export default function SignInBubble({ onSignIn }) {
     const handleSubmit = (event) => {
         event.preventDefault(); 
         if(email=="admin@hospital.com" && password=="123"){
-            onSignIn(); 
+            onSignIn(email); 
         }
         
     };
