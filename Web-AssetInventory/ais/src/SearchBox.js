@@ -47,44 +47,51 @@ export default function SearchBox() {
     };
 
     return (
-        <div className="container searchBox py-5">
-            <input
-                type="text"
-                className="form-control my-3"
-                placeholder="Search..."
-                value={searchTerm}
-                onChange={handleSearch}
-            />
+        <div>
+            <div className="col-sm-6 px-5">
+                <div className="container searchBox py-5">
+                    <input
+                        type="text"
+                        className="form-control my-3"
+                        placeholder="Search..."
+                        value={searchTerm}
+                        onChange={handleSearch}
+                    />
 
-            {!isSmallScreen && (
-                <div className="row mb-2">
-                    <div className="col-3"><strong>Item Name</strong></div>
-                    <div className="col-3"><strong>Manufacturer</strong></div>
-                    <div className="col-3"><strong>Location</strong></div>
-                    <div className="col-3"><strong>Status</strong></div>
-                </div>
-            )}
+                    {!isSmallScreen && (
+                        <div className="row mb-2">
+                            <div className="col-3"><strong>Item Name</strong></div>
+                            <div className="col-3"><strong>Manufacturer</strong></div>
+                            <div className="col-3"><strong>Location</strong></div>
+                            <div className="col-3"><strong>Status</strong></div>
+                        </div>
+                    )}
 
-            <div className="result-container">
-                {filteredItems.map(item => (
-                    <div key={item.id} className="row w-100">
-                        <button className="btn btn-primary mx-1 my-1 w-100">
-                            <div className="row w-100">
-                                {isSmallScreen ? (
-                                    <div className="col-12">{item.name}</div> 
-                                ) : (
-                                    <>
-                                        <div className="col-3">{item.name}</div>
-                                        <div className="col-3">{item.manufacturer}</div>
-                                        <div className="col-3">{item.location}</div>
-                                        <div className="col-3">{item.status}</div>
-                                    </>
-                                )}
+                    <div className="result-container">
+                        {filteredItems.map(item => (
+                            <div key={item.id} className="row w-100">
+                                <button className="btn btn-primary mx-1 my-1 w-100">
+                                    <div className="row w-100">
+                                        {isSmallScreen ? (
+                                            <div className="col-12">{item.name}</div> 
+                                        ) : (
+                                            <>
+                                                <div className="col-3">{item.name}</div>
+                                                <div className="col-3">{item.manufacturer}</div>
+                                                <div className="col-3">{item.location}</div>
+                                                <div className="col-3">{item.status}</div>
+                                            </>
+                                        )}
+                                    </div>
+                                </button>
                             </div>
-                        </button>
+                        ))}
                     </div>
-                ))}
+                </div>
             </div>
+        <div className="col-sm-6">
         </div>
+        </div>
+        
     );
 }

@@ -14,12 +14,7 @@ export default function SearchPage(){
                     <SearchPageItemBar/>
                 </div>
                 <div className="row">
-                    <div className="col-sm-6 px-5">
-                    <SearchBox/>
-                    </div>
-                    <div className="col-sm-6">
-                        <h1>hello</h1>
-                    </div>
+                   <SearchBox/>
                 </div>
              </div>
         </div>
