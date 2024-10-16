@@ -22,6 +22,14 @@ to download dependencies:
   - run: pip install -r requirements.txt
 
 okay you should be good to do stuff now
+
+------------------------------------------------------------------------------
+
+TO RUN BACKEND SERVER (will try to figure out how to make it not local):
+  - first, make sure you have virtual environment activated and have downloaded all dependencies
+  - in command prompt, traverse to <xxx>/django_backend/backend directory
+  - run: py manage.py runserver
+
 ------------------------------------------------------------------------------
 superuser info:
   username: admin
