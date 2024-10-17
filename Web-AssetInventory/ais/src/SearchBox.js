@@ -1,31 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SearchPage.css';
 
-
-const items = [
-    { id: 1, name: 'Wheelchair', manufacturer: 'Company A', location: 'Warehouse 1', status: 'In' },
-    { id: 2, name: 'Wheelchair', manufacturer: 'Company B', location: 'Warehouse 2', status: 'Out' },
-    { id: 3, name: 'Walker', manufacturer: 'Company C', location: 'Warehouse 3', status: 'In' },
-    { id: 4, name: 'Cane', manufacturer: 'Company A', location: 'Warehouse 1', status: 'In' },
-    { id: 5, name: 'Crutches', manufacturer: 'Company B', location: 'Warehouse 2', status: 'Out' },
-    { id: 6, name: 'Hospital Bed', manufacturer: 'Company D', location: 'Warehouse 4', status: 'In' },
-    { id: 7, name: 'Wheelchair', manufacturer: 'Company A', location: 'Warehouse 3', status: 'Out' },
-    { id: 8, name: 'Oxygen Tank', manufacturer: 'Company C', location: 'Warehouse 5', status: 'In' },
-    { id: 9, name: 'Wheelchair', manufacturer: 'Company B', location: 'Warehouse 2', status: 'Out' },
-    { id: 10, name: 'Walker', manufacturer: 'Company D', location: 'Warehouse 1', status: 'In' },
-    { id: 11, name: 'Cane', manufacturer: 'Company A', location: 'Warehouse 1', status: 'Out' },
-    { id: 12, name: 'Crutches', manufacturer: 'Company C', location: 'Warehouse 3', status: 'In' },
-    { id: 13, name: 'Oxygen Tank', manufacturer: 'Company B', location: 'Warehouse 4', status: 'Out' },
-    { id: 14, name: 'Defibrillator', manufacturer: 'Company D', location: 'Warehouse 5', status: 'In' },
-    { id: 15, name: 'Stretcher', manufacturer: 'Company A', location: 'Warehouse 2', status: 'In' },
-];
-
-
 export default function SearchBox() {
     const [searchTerm, setSearchTerm] = useState('');
-    const [filteredItems, setFilteredItems] = useState(items);
+    const [filteredItems, setFilteredItems] = useState([]);
     const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+    // will store fetched items
+    const [items, setItems] = useState([]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -37,11 +21,36 @@ export default function SearchBox() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+
+        // fetching data from API
+        const fetchData = async() => {
+            try {
+                // collect data from this endpoint
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
+                
+                console.log("API URL:", process.env.REACT_APP_API_URL);
+                console.log(res.data)
+                // set fetched items
+                setItems(res.data);
+
+                //initialize filtered items, makes sure all items can be seen once loaded
+                setFilteredItems(res.data);
+
+            } catch (error) {
+                console.error('Data could not be fetched', error)
+            }
+        }
+
+        fetchData();
+
+    }, [])
+
     const handleSearch = (event) => {
         const value = event.target.value;
         setSearchTerm(value);
         const filtered = items.filter(item =>
-            item.name.toLowerCase().includes(value.toLowerCase())
+            item.itemName.toLowerCase().includes(value.toLowerCase())
         );
         setFilteredItems(filtered);
     };
@@ -68,30 +77,34 @@ export default function SearchBox() {
                     )}
 
                     <div className="result-container">
-                        {filteredItems.map(item => (
-                            <div key={item.id} className="row w-100">
-                                <button className="btn btn-primary mx-1 my-1 w-100">
-                                    <div className="row w-100">
-                                        {isSmallScreen ? (
-                                            <div className="col-12">{item.name}</div> 
-                                        ) : (
-                                            <>
-                                                <div className="col-3">{item.name}</div>
-                                                <div className="col-3">{item.manufacturer}</div>
-                                                <div className="col-3">{item.location}</div>
-                                                <div className="col-3">{item.status}</div>
-                                            </>
-                                        )}
-                                    </div>
-                                </button>
+                        {filteredItems.length > 0 ? (
+                            filteredItems.map((item, index) => (
+                                <div key={index} className="row w-100">
+                                    <button className="btn btn-primary mx-1 my-1 w-100">
+                                        <div className="row w-100">
+                                            {isSmallScreen ? (
+                                                <div className="col-12">{item.itemName}</div>
+                                            ) : (
+                                                <>
+                                                    <div className="col-3">{item.itemName}</div>
+                                                    <div className="col-3">{item.manufacturer}</div>
+                                                    <div className="col-3">{item.location}</div>
+                                                    <div className="col-3">{item.available ? 'Available' : 'Unavailable'}</div>
+                                                </>
+                                            )}
+                                        </div>
+                                    </button>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="row w-100">
+                                <div className="col-12 text-center">No items found</div>
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
             </div>
-        <div className="col-sm-6">
+            <div className="col-sm-6"></div>
         </div>
-        </div>
-        
     );
 }
