@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
 
-    'assets'
+    'assets',
+    'employees'
 ]
 
 CORS_ALLOWED_ORIGINS = ['http://localhost:3000']
