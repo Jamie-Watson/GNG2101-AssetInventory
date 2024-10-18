@@ -19,7 +19,7 @@ export default function AddItem(){
 
     return(<div className="row">
         <div className="col-lg-6 px-5 pb-5">
-        <div className="container searchBox d-flex px-5 align-items-center justify-content-center" style={{flexDirection:"column"}}>
+        <div className="container searchBox p-5 d-flex align-items-center justify-content-center" style={{flexDirection:"column"}}>
                 <div className="row mb-3">
                     <h6 className="display-6 text-center removeItemLabel pt-2"><strong>{itemName || "You are Adding an Asset"}</strong></h6>
                 </div>
@@ -94,14 +94,13 @@ export default function AddItem(){
                         </p>
                     </div>
                 </div>
-                <div className="row mb-3">
-                    <h5 className="text-center">Notes</h5>
+                <div className="row my-3">
                     <textarea
                         className="form-control"
                         rows="4"
                         value={notes}
                         onChange={handleNotesChange} 
-                        style={{ maxHeight: '20vh', resize: 'none' }} 
+                        style={{ maxHeight: '10vh', resize: 'none' }} 
                         placeholder='Notes:'
                     />
                 </div>
