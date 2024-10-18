@@ -13,9 +13,9 @@ export default function SearchPage({username}){
                 <div className="row">
                     <SearchPageItemBar/>
                 </div>
-                <div className="row">
-                   <SearchBox/>
-                </div>
+                
+                <SearchBox/>
+                
              </div>
         </div>
         

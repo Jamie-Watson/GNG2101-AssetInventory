@@ -38,6 +38,26 @@
 
 .searchBox{
     background-color: #FCFCFC;
-    min-height:60vh;
+    min-height:65vh;
+    max-height:65vh;
+    border-radius: 8px;
+}
+
+.editButton{
+    background-color: #b6c6d4 ;
+    border-radius: 18px;
+    border-color: #b6c6d4;
+}
+
+.editButton:hover{
+    background-color: #8ab8e0;
+    border-radius: 18px;
+    border-color: #8ab8e0;
+}
+
+.itemImage{
+    height: '100%';
+    width: '100%';
+    object-fit: 'contain';
     border-radius: 8px;
 }
