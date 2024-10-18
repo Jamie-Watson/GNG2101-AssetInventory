@@ -21,6 +21,12 @@ to download dependencies:
   - in cmd, go to backend directory
   - run: pip install -r requirements.txt
 
+to like tell vscode that ur on virtual environment:
+  - in vscode, do CTRL + SHIFT + P
+  - search for Python: Select Interpreter
+  - choose enter interpreter path and then find
+  - go to your venv folder, Scripts, then choose python.exe
+
 okay you should be good to do stuff now
 
 ------------------------------------------------------------------------------
@@ -31,9 +37,11 @@ TO RUN BACKEND SERVER (will try to figure out how to make it not local):
   - run: py manage.py runserver
 
 ------------------------------------------------------------------------------
-superuser info:
+
+django superuser info:
   username: admin
   email: admin@hospital.com
   password: 123
 
 admin webpage: http://127.0.0.1:8000/admin/login/?next=/admin
+api link: http://127.0.0.1:8000/api
