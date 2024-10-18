@@ -188,7 +188,7 @@ export default function SearchBox() {
                                         onChange={(e) => setDate(e.target.value)} 
                                     />
                                 ) : (
-                                    date // Display the date when not in edit mode
+                                    date 
                                 )}
                             </p>
                             <p className="mb-0 px-5">
