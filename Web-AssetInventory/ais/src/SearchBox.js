@@ -117,12 +117,14 @@ export default function SearchBox() {
                     <div className="row justify-content-center" style={{ minHeight: '20vh', alignItems: 'center' }}>
                         <div className="col-sm-10 d-flex justify-content-center" style={{ height: '100%' }}>
                             <img
-                            src="https://picsum.photos/800/400"
-                            className="img-fluid itemImage"
-                            alt="Responsive image"
+                                src="https://picsum.photos/1200/1200"
+                                className="img-fluid itemImage"
+                                alt="Responsive image"
+                                style={{ height: '100%', maxHeight: '20vh', width: 'auto' }} 
                             />
                         </div>
                     </div>
+
                     <div className="row mb-3">
                         <h4 className="display-6 text-center"><strong>Item Name (#123456)</strong></h4>
                     </div>
