@@ -1,4 +1,7 @@
-GOTTA MAKE PYTHON viRTUAL ENVIRONMENT (venv) TO EDIT BACKEND !!!!
+------------------------------------------------------------------------------
+
+GOTTA MAKE PYTHON viRTUAL ENVIRONMENT (venv) TO RUN BACKEND AND 
+GET ASSETS, CAN STILL LOGIN THOUGH
 
 download python and pip package if not already downloaded
 if on mac, use terminal instead of cmd prompt
@@ -31,7 +34,7 @@ okay you should be good to do stuff now
 
 ------------------------------------------------------------------------------
 
-TO RUN BACKEND SERVER (will try to figure out how to make it not local):
+TO RUN BACKEND SERVER (need to run to be able to login and stuff):
   - first, make sure you have virtual environment activated and have downloaded all dependencies
   - in command prompt, traverse to <xxx>/django_backend/backend directory
   - run: py manage.py runserver
@@ -45,3 +48,5 @@ django superuser info:
 
 admin webpage: http://127.0.0.1:8000/admin/login/?next=/admin
 api link: http://127.0.0.1:8000/api
+
+------------------------------------------------------------------------------
