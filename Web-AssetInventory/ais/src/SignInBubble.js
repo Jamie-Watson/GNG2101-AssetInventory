@@ -31,15 +31,20 @@ export default function SignInBubble({ onSignIn }) {
     useEffect (() => {
         // fetch data from API
         const fetchData = async() => {
+
+            // ADDING TEST ADMIN ACCOUNT, CAN BE USED WHEN BACKEND IS OFFLINE
+            const testEmployee = {firstName: 'Test', lastName: 'Account'};
+            const testAdmin = {employee: testEmployee, email: 'admin@hospital.com', username: 'test', password: '123'};
+            
             try{
                 // collect data
                 const res = await axios.get(`${process.env.REACT_APP_API_URL}admins/`);
 
                 // set 
-                setAdmins(res.data);
+                setAdmins([res.data]);
 
             } catch {
-                console.log('Data could not be fetched');
+                setAdmins([testAdmin]);
             }
         }
 

@@ -9,4 +9,5 @@ class Item(models.Model):
     manufacturer = models.CharField(default = None, max_length = 255)
     location = models.CharField(default = None, max_length = 255)
     available = models.BooleanField(default = True)
+    notes = models.TextField(default = None, null = True)
     dateTaken = models.DateTimeField(default = None, null = True)
