@@ -61,3 +61,7 @@
     object-fit: 'contain';
     border-radius: 8px;
 }
+
+.removeItemLabel{
+    font-size: calc(1rem + 1vw);
+}

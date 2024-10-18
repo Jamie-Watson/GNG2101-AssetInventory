@@ -5,6 +5,8 @@ import "./SearchPage.css"
 import SearchPageItemBar from './SearchPageItemBar';
 import SearchBox from './SearchBox';
 import { useState } from 'react';
+import RemoveItem from './RemoveItem';
+import AddItem from './AddItem';
 
 export default function SearchPage({username}){
 
@@ -13,10 +15,12 @@ export default function SearchPage({username}){
     
     const handleRemove = () => {
         setRemove(!isRemove);
+        setAdd(false);
     };
 
     const handleAdd = () => {
         setAdd(!isAdd);
+        setRemove(false);
     };
     return(
         <div className="container searchPageContainer mb-5">
@@ -32,14 +36,14 @@ export default function SearchPage({username}){
                     <></>
                 )}
 
-                {!isRemove && !isAdd ? (
-                    <SearchBox/>
+                {isRemove ? (
+                    <RemoveItem/>
                 ) : (
                     <></>
                 )}
 
-                {!isRemove && !isAdd ? (
-                    <SearchBox/>
+                {isAdd ? (
+                   <AddItem/>
                 ) : (
                     <></>
                 )}
