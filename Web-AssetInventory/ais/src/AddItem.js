@@ -1,9 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SearchPage.css';
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
+import axios from 'axios';
 
 export default function AddItem(){
 
+    const [items, setItems] = useState([]);
     const [itemName, setItemName] = useState('');
     const [itemCode, setItemCode] = useState('');
     const [status, setStatus] = useState('Available');
@@ -16,6 +18,28 @@ export default function AddItem(){
     const handleNotesChange = (e) => {
         setNotes(e.target.value);
     };
+
+    // handle data from API (grabbed from SearchBox.js file)
+    useEffect(() => {
+
+        // fetching data from API
+        const fetchData = async() => {
+            try {
+                // collect data from this endpoint
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
+                
+                // set fetched items
+                setItems(res.data);
+
+            } catch (error) {
+                console.error('Data could not be fetched', error);
+            }
+        }
+
+        fetchData();
+
+    }, [])
+
 
     return(<div className="row">
         <div className="col-lg-6 px-5 pb-5">
