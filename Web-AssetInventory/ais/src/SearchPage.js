@@ -7,7 +7,7 @@ import SearchBox from './SearchBox';
 
 export default function SearchPage({username}){
     return(
-        <div className="container searchPageContainer">
+        <div className="container searchPageContainer mb-5">
              <Navbar username={username}/>
              <div className="container blueContainer">
                 <div className="row">
