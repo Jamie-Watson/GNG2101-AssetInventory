@@ -21,6 +21,7 @@ export default function SearchBox() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // handle data from API
     useEffect(() => {
 
         // fetching data from API
@@ -29,8 +30,6 @@ export default function SearchBox() {
                 // collect data from this endpoint
                 const res = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
                 
-                console.log("API URL:", process.env.REACT_APP_API_URL);
-                console.log(res.data)
                 // set fetched items
                 setItems(res.data);
 
@@ -38,7 +37,7 @@ export default function SearchBox() {
                 setFilteredItems(res.data);
 
             } catch (error) {
-                console.error('Data could not be fetched', error)
+                console.error('Data could not be fetched', error);
             }
         }
 

@@ -1,11 +1,15 @@
 import React from 'react';
 import logo from './Images/logo-no-text.jpg';
 import './App.css';
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
+import axios from 'axios';
 
 export default function SignInBubble({ onSignIn }) {
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState(''); 
+
+    // store fetched admins in here
+    const [admins, setAdmins] = useState([]);
 
     const imgStyle = {
         objectFit: 'cover',  
@@ -14,11 +18,36 @@ export default function SignInBubble({ onSignIn }) {
 
     const handleSubmit = (event) => {
         event.preventDefault(); 
-        if(email=="admin@hospital.com" && password=="123"){
-            onSignIn(email); 
+
+        //for each admin in admins
+        for (var admin of admins) {
+            if (email==admin.email && password==admin.password) {
+                onSignIn(email);
+            }
         }
-        
     };
+
+    // handle admin data from api
+    useEffect (() => {
+        // fetch data from API
+        const fetchData = async() => {
+            try{
+                // collect data
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}admins/`);
+
+                // set 
+                setAdmins(res.data);
+
+            } catch {
+                console.log('Data could not be fetched');
+            }
+        }
+
+        fetchData();
+
+    }, [])
+
+
 
     return (
         <div className="container justify-content-center noCursor" style={{ borderColor: '#d6d6d6', border: '2px solid', borderRadius: '10px', backgroundColor: "#fcfcfc" }}>
