@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SearchPage.css';
+import default_image from './Images/no_image.png'
 
 export default function SearchBox() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -16,6 +17,12 @@ export default function SearchBox() {
     const [status, setStatus] = useState("Checked Out"); 
     const [date, setDate] = useState("2024-09-26"); 
     const [itemId, setItemId] = useState("");
+
+    // hold image url and files
+    const [imageUrl, setImageUrl] = useState('');
+    const [imageFile, setImageFile] = useState(null);
+
+    //image if no image attached to item
 
     // will store fetched items and employees
     const [items, setItems] = useState([]);
@@ -100,8 +107,28 @@ export default function SearchBox() {
         setStatus(item.status);
         setDate(item.dateTaken || "");
         setNotes(item.notes || "");
+        setImageUrl(item.image || default_image);
         setSelectedEmployee(employees.find(employee => employee.id === parseInt(item.holder)));
-    }
+        console.log(imageUrl);
+    };
+
+    // when the image is clicked
+    const handleImageClick = () => {
+        // open local documents to find image
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        
+        fileInput.onchange = (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                setImageFile(file);
+                setImageUrl(URL.createObjectURL(file)); 
+            }
+        };
+        
+        fileInput.click();
+    };
 
 
     const handleEditButton = () => {
@@ -124,8 +151,19 @@ export default function SearchBox() {
                 ...(notes && { notes }),
             };
 
+            // put all in form data
+            const formData = new FormData();
+            Object.keys(updated).forEach(key => {
+                formData.append(key, updated[key]);
+            });
+
+            //if image uploaded, add
+            if (imageFile) {
+                formData.append('image', imageFile)
+            }
+
             // make put requeest to try replacing old asset with new one
-            await axios.put(`${process.env.REACT_APP_API_URL}assets/${selectedItem.id}/`, updated);
+            await axios.put(`${process.env.REACT_APP_API_URL}assets/${selectedItem.id}/`, formData);
 
             // refresh item list
             const res = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
@@ -145,16 +183,6 @@ export default function SearchBox() {
         setNotes(event.target.value); 
     };
 
-    const handleItemClick = (item) => {
-        setItemName(item.itemName);
-        setManufacturer(item.manufacturer);
-        setHolder(item.holder);
-        setLocation(item.location);
-        setStatus(item.status);
-        setDate(item.date);
-        setNotes(item.notes || '');
-    };
-    
     return (
         <div className="row">
             <div className="col-lg-6 px-5 pb-2">
@@ -181,7 +209,7 @@ export default function SearchBox() {
                             filteredItems.map((item, index) => (
                                 <div key={index} className="row w-100">
 
-                                    <button className="btn btn-primary mx-1 my-1 w-100" onClick={() => handleItemClick(item)}>
+                                    <button className="btn btn-primary mx-1 my-1 w-100" onClick={() => handleItemSelect(item)}>
 
                                         <div className="row w-100">
                                             {isSmallScreen ? (
@@ -224,10 +252,11 @@ export default function SearchBox() {
                     <div className="row justify-content-center" style={{ minHeight: '20vh', alignItems: 'center' }}>
                         <div className="col-sm-10 d-flex justify-content-center" style={{ height: '100%' }}>
                             <img
-                                src="https://picsum.photos/1200/1200"
+                                src={imageUrl}
                                 className="img-fluid itemImage"
-                                alt="Responsive image"
+                                alt="Item"
                                 style={{ height: '100%', maxHeight: '20vh', width: 'auto' }} 
+                                onClick = {handleImageClick}
                             />
                         </div>
                     </div>
@@ -309,12 +338,18 @@ export default function SearchBox() {
                             </p>
                             <p className="mb-0 px-5">
                                 Holder: {showEditOption ? (
-                                    <input
-                                        type="text"
-                                        className="form-control d-inline-block"
+                                    <select
+                                        className="form-control"
                                         value={holder}
                                         onChange={(e) => setHolder(e.target.value)} 
-                                    />
+                                    >
+                                        <option value="">Select Holder</option>
+                                        {employees.map((employee) => (
+                                            <option key = {employee.id} value = {employee.id}>
+                                                {employee.firstName} {employee.lastName}
+                                            </option>
+                                        ))}
+                                    </select>
                                 ) : (
                                     selectedEmployee ? `${selectedEmployee.firstName} ${selectedEmployee.lastName} (#${selectedEmployee.id})` : "N/A"
                                 )}
