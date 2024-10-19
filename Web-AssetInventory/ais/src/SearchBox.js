@@ -104,7 +104,7 @@ export default function SearchBox() {
                                                     <div className="col-3">{item.itemName}</div>
                                                     <div className="col-3">{item.manufacturer}</div>
                                                     <div className="col-3">{item.location}</div>
-                                                    <div className="col-3">{item.available ? 'Available' : 'Unavailable'}</div>
+                                                    <div className="col-3">{item.status}</div>
                                                 </>
                                             )}
                                         </div>

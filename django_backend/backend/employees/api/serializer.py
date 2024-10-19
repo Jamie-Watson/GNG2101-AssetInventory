@@ -5,7 +5,7 @@ from ..models import Employee, Admin
 class EmployeeSerializer(ModelSerializer):
     class Meta:
         model = Employee
-        fields = ['firstName', 'lastName']
+        fields = ['id', 'firstName', 'lastName']
 
 # serializer for admins
 class AdminSerializer(ModelSerializer):
