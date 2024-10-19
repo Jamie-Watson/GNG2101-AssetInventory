@@ -209,7 +209,7 @@ export default function SearchBox() {
                             filteredItems.map((item, index) => (
                                 <div key={index} className="row w-100">
 
-                                    <button className="btn btn-primary mx-1 my-1 w-100" onClick={() => handleItemSelect(item)}>
+                                    <button className="btn searchButton mx-1 my-1 w-100" onClick={() => handleItemSelect(item)}>
 
                                         <div className="row w-100">
                                             {isSmallScreen ? (

@@ -1,6 +1,6 @@
 .blueContainer{
     background-color: #b6c6d4 ;
-    height: 80vh;
+    min-height: 80vh;
     border-radius: 8px;
 }
 .searchPageContainer{
@@ -70,4 +70,16 @@
 
 .removeItemLabel{
     font-size: calc(1rem + 1vw);
+}
+
+.searchButton {
+    background-color: #e0e0e0; /* Original background color */
+    color: #333333; /* Dark gray text color for legibility */
+    border: 2px solid #ccc; /* Optional: add a border for better definition */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+}
+.searchButton:hover {
+    background-color: #b0b0b0; /* Lighter background color on hover */
+    border: 2px solid #ccc; /* Optional: add a border for better definition */
+    color: #000000; /* Black text color on hover for better visibility */
 }

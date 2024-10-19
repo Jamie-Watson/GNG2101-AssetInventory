@@ -17,10 +17,14 @@ function App() {
     console.log(currentUsername);
   };
 
+  const handleSignOut = () => {
+    setIsSignedIn(false);
+  };
+
 
   return (
     <>
-      {isSignedIn ? <SearchPage username={username}/> : <SignInPage onSignIn={handleSignIn} />}
+      {isSignedIn ? <SearchPage username={username} handleSignOut={handleSignOut}/> : <SignInPage onSignIn={handleSignIn} />}
     </>
   );
 
