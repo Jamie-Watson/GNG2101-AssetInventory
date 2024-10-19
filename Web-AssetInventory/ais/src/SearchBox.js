@@ -10,12 +10,12 @@ export default function SearchBox() {
     const [isSmallScreen, setIsSmallScreen] = useState(false);
     const [showEditOption, setShowEditOption] = useState(false); 
     const [notes, setNotes] = useState(''); 
-    const [itemName, setItemName] = useState('Item Name (#123456)'); 
-    const [manufacturer, setManufacturer] = useState('Drive DeVilbiss Healthcare'); 
-    const [holder, setHolder] = useState('John Smith (#74626190)'); 
-    const [location, setLocation] = useState('Room 123'); 
-    const [status, setStatus] = useState("Checked Out"); 
-    const [date, setDate] = useState("2024-09-26"); 
+    const [itemName, setItemName] = useState(''); 
+    const [manufacturer, setManufacturer] = useState(''); 
+    const [holder, setHolder] = useState(''); 
+    const [location, setLocation] = useState(''); 
+    const [status, setStatus] = useState(""); 
+    const [date, setDate] = useState(""); 
     const [itemId, setItemId] = useState("");
 
     // hold image url and files
@@ -235,6 +235,7 @@ export default function SearchBox() {
                 </div>
             </div>
             <div className="col-lg-6 px-5 pb-5">
+            { selectedItem && (
                 <div className="container searchBox py-5 justify-content-center" style = {{overflowY: 'auto', overflowX: 'hidden', maxHeight: '60vh', width: '100%'}}> 
                     <div className="row justify-content-end">
                         <div className="col-sm-2 justify-content-end">
@@ -253,10 +254,10 @@ export default function SearchBox() {
                         <div className="col-sm-10 d-flex justify-content-center" style={{ height: '100%' }}>
                             <img
                                 src={imageUrl}
-                                className="img-fluid itemImage"
+                                className={`img-fluid itemImage ${showEditOption ? 'hoverable' : ''}`}
                                 alt="Item"
                                 style={{ height: '100%', maxHeight: '20vh', width: 'auto' }} 
-                                onClick = {handleImageClick}
+                                onClick = {showEditOption ? handleImageClick : null}
                             />
                         </div>
                     </div>
@@ -380,9 +381,8 @@ export default function SearchBox() {
                         />
                     </div>
                 </div>
+            )}
             </div>
-
-
         </div>
     );
 }

@@ -96,7 +96,7 @@ export default function AddItem(){
             <div className="col-lg-6 px-5 pb-5">
                 <div className="container searchBox p-5 d-flex flex-column align-items-center" style={{ borderRadius: '5px'}}>
                     <h6 className="display-6 text-center removeItemLabel pt-2"><strong>{itemName || "You are Adding an Asset"}</strong></h6>
-                    <div className = "input-container" style = {{overflowY: 'auto', maxHeight: '60vh', width: '100%'}}>
+                    <div className = "input-container" style = {{overflowY: 'auto', overflowX: 'hidden', maxHeight: '60vh', width: '100%'}}>
                         <div className="row">
                             <div className="text-start w-100">
                             <p className="mb-0 px-3">
@@ -183,13 +183,13 @@ export default function AddItem(){
                                 </p>
                             </div>
                         </div>
-                        <div className="row my-3">
+                        <div className="row my-3 justify-content-center">
                             <textarea
                                 className="form-control"
                                 rows="4"
                                 value={notes}
                                 onChange={handleNotesChange} 
-                                style={{ maxHeight: '10vh', resize: 'none' }} 
+                                style={{ maxHeight: '10vh', resize: 'none', maxWidth: '45vh' }} 
                                 placeholder='Notes:'
                             />
                         </div>
