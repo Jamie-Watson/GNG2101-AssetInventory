@@ -53,11 +53,11 @@ export default function RemoveItem(){
             }
 
             // save item name
-            setItemName(toDelete.itemName);
+            const nameOfItem = toDelete.itemName;
             
             // try delete
             const res = await axios.delete(`${process.env.REACT_APP_API_URL}assets/${toDelete.id}/`);
-            setVerificationMessage(`Item "${itemName}" was deleted.`);
+            setVerificationMessage(`Item "${nameOfItem}" was deleted.`);
 
             // if error deleting
         } catch {

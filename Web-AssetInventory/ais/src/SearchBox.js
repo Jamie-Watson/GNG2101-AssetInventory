@@ -194,7 +194,7 @@ export default function SearchBox() {
                 </div>
             </div>
             <div className="col-lg-6 px-5 pb-5">
-                <div className="container searchBox py-5 justify-content-center" style = {{overflowY: 'auto', maxHeight: '60vh', width: '100%'}}> 
+                <div className="container searchBox py-5 justify-content-center" style = {{overflowY: 'auto', overflowX: 'hidden', maxHeight: '60vh', width: '100%'}}> 
                     <div className="row justify-content-end">
                         <div className="col-sm-2 justify-content-end">
                             <button className="btn btn-primary editButton" onClick={showEditOption ? handleEditSubmit : handleEditButton}>
@@ -320,14 +320,14 @@ export default function SearchBox() {
                             </p>
                         </div>
                     </div>
-                    <div className="row mb-3">
+                    <div className="row mb-3 justify-content-center">
                         <h5 className="text-center">Notes</h5>
                         <textarea
                             className="form-control"
                             rows="4"
                             value={notes}
                             onChange={handleNotesChange} 
-                            style={{ maxHeight: '20vh' , resize:'none'}} 
+                            style={{ maxHeight: '20vh' , resize:'none', maxWidth: '45vh'}} 
                             placeholder='Notes:'
                         />
                     </div>
