@@ -15,6 +15,30 @@ export default function AddItem(){
     const [notes, setNotes] = useState('');
     const [verificationMessage, setVerificationMessage] = useState('');
 
+    const [employees, setEmployees] = useState([]);
+
+    // handle employee data from api
+    useEffect (() => {
+        // fetch data from API
+        const fetchData = async() => {
+
+
+            try{
+                // collect data
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}employees/`);
+
+                // set 
+                setEmployees(res.data);
+
+            } catch (error) {
+                console.error('Data could not be fetched', error);
+            }
+        }
+
+        fetchData();
+
+    }, [])
+
     const handleNotesChange = (e) => {
         setNotes(e.target.value);
     };
@@ -114,12 +138,18 @@ export default function AddItem(){
                                 </p>
                                 <p className="mb-0 px-3">
                                     Holder: 
-                                    <input
-                                        type="text"
+                                    <select
                                         className="form-control"
                                         value={holder}
                                         onChange={(e) => setHolder(e.target.value)} 
-                                    />
+                                    >
+                                        <option value="">Select Holder</option>
+                                        {employees.map((employee) => (
+                                            <option key = {employee.id} value = {employee.id}>
+                                                {employee.firstName} {employee.lastName}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </p>
                                 <p className="mb-0 px-3">
                                     Location: 
