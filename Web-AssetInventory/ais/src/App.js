@@ -17,12 +17,12 @@ function App() {
     console.log(currentUsername);
   };
 
-  /*
+
   return (
     <>
       {isSignedIn ? <SearchPage username={username}/> : <SignInPage onSignIn={handleSignIn} />}
     </>
-  );*/
+  );
 
   return <SearchPage username="Blank"/>;
 }

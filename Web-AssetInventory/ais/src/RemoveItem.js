@@ -37,16 +37,14 @@ export default function RemoveItem(){
     // handle delete after submit is pressed
     const handleDelete = async () => {
         try {
-            //check if item is an integer
-            const idToDelete = parseInt(itemId, 10);
 
-            if (isNaN(idToDelete)) {
+            const idToDelete = parseInt(itemId, 10);
+            if (isNaN(idToDelete) || idToDelete === null) {
                 setVerificationMessage('Invalid ID.');
                 return;
             }
 
             // find item
-            console.log(items.find(item => item.itemId === idToDelete));
             const toDelete = items.find(item => item.itemId === idToDelete);
 
             if (!toDelete) {
@@ -54,10 +52,12 @@ export default function RemoveItem(){
                 return;
             }
 
+            // save item name
             setItemName(toDelete.itemName);
+            
             // try delete
             const res = await axios.delete(`${process.env.REACT_APP_API_URL}assets/${toDelete.id}/`);
-            setVerificationMessage('Item "${itemName}" was deleted.');
+            setVerificationMessage(`Item "${itemName}" was deleted.`);
 
             // if error deleting
         } catch {
@@ -109,13 +109,11 @@ export default function RemoveItem(){
                     </button>
                 </div>
                 {verificationMessage && (
-                    <div className = "alert alert-info mt-3" role = "alert">
+                    <div className = "alert alert-info mt-0 ms-0" role = "alert" style={{width: '100%'}}>
                         {verificationMessage}
                     </div>
                 )}
             </div>
         </div>
-
-
     </div>)
 }
