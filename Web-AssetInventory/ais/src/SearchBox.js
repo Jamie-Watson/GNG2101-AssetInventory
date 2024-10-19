@@ -17,6 +17,9 @@ export default function SearchBox() {
     const [date, setDate] = useState("2024-09-26"); 
     const [itemId, setItemId] = useState("");
 
+    // hold image url
+    const [imageUrl, setImageUrl] = useState('');
+
     // will store fetched items and employees
     const [items, setItems] = useState([]);
     const [employees, setEmployees] = useState([]);
@@ -100,6 +103,7 @@ export default function SearchBox() {
         setStatus(item.status);
         setDate(item.dateTaken || "");
         setNotes(item.notes || "");
+        setImageUrl(item.image);
         setSelectedEmployee(employees.find(employee => employee.id === parseInt(item.holder)));
     }
 
@@ -153,6 +157,7 @@ export default function SearchBox() {
         setStatus(item.status);
         setDate(item.date);
         setNotes(item.notes || '');
+        setImageUrl(item.image);
     };
     
     return (
@@ -181,7 +186,7 @@ export default function SearchBox() {
                             filteredItems.map((item, index) => (
                                 <div key={index} className="row w-100">
 
-                                    <button className="btn btn-primary mx-1 my-1 w-100" onClick={() => handleItemClick(item)}>
+                                    <button className="btn btn-primary mx-1 my-1 w-100" onClick={() => handleItemSelect(item)}>
 
                                         <div className="row w-100">
                                             {isSmallScreen ? (
@@ -224,9 +229,9 @@ export default function SearchBox() {
                     <div className="row justify-content-center" style={{ minHeight: '20vh', alignItems: 'center' }}>
                         <div className="col-sm-10 d-flex justify-content-center" style={{ height: '100%' }}>
                             <img
-                                src="https://picsum.photos/1200/1200"
+                                src={imageUrl}
                                 className="img-fluid itemImage"
-                                alt="Responsive image"
+                                alt="Item"
                                 style={{ height: '100%', maxHeight: '20vh', width: 'auto' }} 
                             />
                         </div>
@@ -309,12 +314,18 @@ export default function SearchBox() {
                             </p>
                             <p className="mb-0 px-5">
                                 Holder: {showEditOption ? (
-                                    <input
-                                        type="text"
-                                        className="form-control d-inline-block"
+                                    <select
+                                        className="form-control"
                                         value={holder}
                                         onChange={(e) => setHolder(e.target.value)} 
-                                    />
+                                    >
+                                        <option value="">Select Holder</option>
+                                        {employees.map((employee) => (
+                                            <option key = {employee.id} value = {employee.id}>
+                                                {employee.firstName} {employee.lastName}
+                                            </option>
+                                        ))}
+                                    </select>
                                 ) : (
                                     selectedEmployee ? `${selectedEmployee.firstName} ${selectedEmployee.lastName} (#${selectedEmployee.id})` : "N/A"
                                 )}
