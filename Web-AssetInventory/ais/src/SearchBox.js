@@ -144,6 +144,17 @@ export default function SearchBox() {
     const handleNotesChange = (event) => {
         setNotes(event.target.value); 
     };
+
+    const handleItemClick = (item) => {
+        setItemName(item.itemName);
+        setManufacturer(item.manufacturer);
+        setHolder(item.holder);
+        setLocation(item.location);
+        setStatus(item.status);
+        setDate(item.date);
+        setNotes(item.notes || '');
+    };
+    
     return (
         <div className="row">
             <div className="col-lg-6 px-5 pb-2">
@@ -169,7 +180,9 @@ export default function SearchBox() {
                         {filteredItems.length > 0 ? (
                             filteredItems.map((item, index) => (
                                 <div key={index} className="row w-100">
-                                    <button className="btn btn-primary mx-1 my-1 w-100" onClick = {() => handleItemSelect(item)}>
+
+                                    <button className="btn btn-primary mx-1 my-1 w-100" onClick={() => handleItemClick(item)}>
+
                                         <div className="row w-100">
                                             {isSmallScreen ? (
                                                 <div className="col-12">{item.itemName}</div>
