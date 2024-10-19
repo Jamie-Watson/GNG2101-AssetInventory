@@ -15,9 +15,15 @@ export default function SearchBox() {
     const [location, setLocation] = useState('Room 123'); 
     const [status, setStatus] = useState("Checked Out"); 
     const [date, setDate] = useState("2024-09-26"); 
+    const [itemId, setItemId] = useState("");
 
-    // will store fetched items
+    // will store fetched items and employees
     const [items, setItems] = useState([]);
+    const [employees, setEmployees] = useState([]);
+
+    // will store selected/clicked item and an employee who may be holding it
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -29,7 +35,7 @@ export default function SearchBox() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // handle data from API
+    // handle item data from API
     useEffect(() => {
 
         // fetching data from API
@@ -53,6 +59,27 @@ export default function SearchBox() {
 
     }, [])
 
+    // handle employee data from api
+    useEffect (() => {
+        // fetch data from API
+        const fetchData = async() => {
+
+            try{
+                // collect data
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}employees/`);
+
+                // set 
+                setEmployees(res.data);
+
+            } catch (error) {
+                console.error('Data could not be fetched', error);
+            }
+        }
+
+        fetchData();
+
+    }, [])
+
     const handleSearch = (event) => {
         const value = event.target.value;
         setSearchTerm(value);
@@ -62,8 +89,55 @@ export default function SearchBox() {
         setFilteredItems(filtered);
     };
 
+    // function to collect item data from clicked item
+    const handleItemSelect = (item) => {
+        setSelectedItem(item);
+        setItemName(item.itemName);
+        setItemId(item.itemId);
+        setManufacturer(item.manufacturer);
+        setHolder(item.holder);
+        setLocation(item.location);
+        setStatus(item.status);
+        setDate(item.dateTaken || "");
+        setNotes(item.notes || "");
+        setSelectedEmployee(employees.find(employee => employee.id === parseInt(item.holder)));
+    }
+
 
     const handleEditButton = () => {
+        setShowEditOption(!showEditOption); 
+    };
+
+    const handleEditSubmit = async () => {
+
+        // updated asset
+        try {
+            const updated = {
+                itemName,
+                itemId: parseInt(itemId, 10),
+                status,
+                // only include these if they have a value
+                ...(date && {dateTaken : date}),
+                ...(manufacturer && { manufacturer }),
+                ...(holder && { holder }),
+                ...(location && { location }),
+                ...(notes && { notes }),
+            };
+
+            // make put requeest to try replacing old asset with new one
+            await axios.put(`${process.env.REACT_APP_API_URL}assets/${selectedItem.id}/`, updated);
+
+            // refresh item list
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
+            setItems(res.data);
+            setFilteredItems(res.data);
+
+            // reset selected item
+            setSelectedItem(null);
+
+        } catch (error) {
+            console.error('Error updating asset:', error);
+        }
         setShowEditOption(!showEditOption); 
     };
 
@@ -95,7 +169,7 @@ export default function SearchBox() {
                         {filteredItems.length > 0 ? (
                             filteredItems.map((item, index) => (
                                 <div key={index} className="row w-100">
-                                    <button className="btn btn-primary mx-1 my-1 w-100">
+                                    <button className="btn btn-primary mx-1 my-1 w-100" onClick = {() => handleItemSelect(item)}>
                                         <div className="row w-100">
                                             {isSmallScreen ? (
                                                 <div className="col-12">{item.itemName}</div>
@@ -120,13 +194,17 @@ export default function SearchBox() {
                 </div>
             </div>
             <div className="col-lg-6 px-5 pb-5">
-                <div className="container searchBox py-5 justify-content-center"> 
+                <div className="container searchBox py-5 justify-content-center" style = {{overflowY: 'auto', maxHeight: '60vh', width: '100%'}}> 
                     <div className="row justify-content-end">
                         <div className="col-sm-2 justify-content-end">
-                            <button className="btn btn-primary editButton" onClick={handleEditButton}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-                                </svg>
+                            <button className="btn btn-primary editButton" onClick={showEditOption ? handleEditSubmit : handleEditButton}>
+                                {showEditOption ? (
+                                    <span>Submit</span>
+                                ):(
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                                        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                    </svg>
+                                )}
                             </button>
                         </div>
                     </div>
@@ -151,15 +229,28 @@ export default function SearchBox() {
                     <div className="row">
                         <div className="text-start">
                             <p className="mb-0 px-5">
-                                Asset Name: {showEditOption ? (
+                                {showEditOption && <span>Asset Name: </span>}
+                                {showEditOption ? (
                                         <input
                                             type="text"
                                             className="form-control d-inline-block"
                                             value={itemName}
                                             onChange={(e) => setItemName(e.target.value)} 
                                         />
+                                    ) : 
+                                        null
+                                    }
+                            </p>
+                            <p className="mb-0 px-5">
+                                Asset ID: {showEditOption ? (
+                                        <input
+                                            type="text"
+                                            className="form-control d-inline-block"
+                                            value={itemId}
+                                            onChange={(e) => setItemId(e.target.value)} 
+                                        />
                                     ) : (
-                                        <></>
+                                        itemId
                                 )}
                             </p>
                             <p className="mb-0 px-5">
@@ -212,7 +303,7 @@ export default function SearchBox() {
                                         onChange={(e) => setHolder(e.target.value)} 
                                     />
                                 ) : (
-                                    holder
+                                    selectedEmployee ? `${selectedEmployee.firstName} ${selectedEmployee.lastName} (#${selectedEmployee.id})` : "N/A"
                                 )}
                             </p>
                             <p className="mb-0 px-5">
