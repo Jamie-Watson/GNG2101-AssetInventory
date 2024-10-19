@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './SearchPage.css';
+import default_image from './Images/no_image.png'
 
 export default function SearchBox() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -19,6 +20,8 @@ export default function SearchBox() {
 
     // hold image url
     const [imageUrl, setImageUrl] = useState('');
+
+    //image if no image attached to item
 
     // will store fetched items and employees
     const [items, setItems] = useState([]);
@@ -103,8 +106,9 @@ export default function SearchBox() {
         setStatus(item.status);
         setDate(item.dateTaken || "");
         setNotes(item.notes || "");
-        setImageUrl(item.image);
+        setImageUrl(item.image || default_image);
         setSelectedEmployee(employees.find(employee => employee.id === parseInt(item.holder)));
+        console.log(imageUrl);
     }
 
 
@@ -149,17 +153,6 @@ export default function SearchBox() {
         setNotes(event.target.value); 
     };
 
-    const handleItemClick = (item) => {
-        setItemName(item.itemName);
-        setManufacturer(item.manufacturer);
-        setHolder(item.holder);
-        setLocation(item.location);
-        setStatus(item.status);
-        setDate(item.date);
-        setNotes(item.notes || '');
-        setImageUrl(item.image);
-    };
-    
     return (
         <div className="row">
             <div className="col-lg-6 px-5 pb-2">

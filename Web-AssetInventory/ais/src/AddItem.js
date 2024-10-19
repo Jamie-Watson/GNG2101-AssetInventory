@@ -14,6 +14,7 @@ export default function AddItem(){
     const [location, setLocation] = useState('');
     const [notes, setNotes] = useState('');
     const [verificationMessage, setVerificationMessage] = useState('');
+    const [imageFile, setImageFile] = useState(null);
 
     const [employees, setEmployees] = useState([]);
 
@@ -45,23 +46,34 @@ export default function AddItem(){
     
     const handleAdd = async () => {
 
-        try {
-            const itemToAdd = {
-                itemName,
-                itemId: parseInt(itemId, 10),
-                status,
-                // only include these if they have a value
-                ...(date && {dateTaken : date}),
-                ...(manufacturer && { manufacturer }),
-                ...(holder && { holder }),
-                ...(location && { location }),
-                ...(notes && { notes }),
-            };
+        // create item
+        const itemToAdd = {
+            itemName,
+            itemId: parseInt(itemId, 10),
+            status,
+            // only include these if they have a value
+            ...(date && {dateTaken : date}),
+            ...(manufacturer && { manufacturer }),
+            ...(holder && { holder }),
+            ...(location && { location }),
+            ...(notes && { notes }),
+        };
 
-            console.log(itemToAdd);
-            
+        // use FormData because want to send both item details and image file
+        const formData = new FormData();
+
+        // append item data
+        Object.keys(itemToAdd).forEach(key => {
+            formData.append(key, itemToAdd[key]);
+        });
+
+        if (imageFile) {
+            formData.append('image', imageFile);
+        }
+
+        try {
             // send POST request to django
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}assets/`, itemToAdd);
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}assets/`, formData)
             setVerificationMessage(`Item "${itemName}" was added.`);
 
             // reset fields
@@ -87,6 +99,15 @@ export default function AddItem(){
                     <div className = "input-container" style = {{overflowY: 'auto', maxHeight: '60vh', width: '100%'}}>
                         <div className="row">
                             <div className="text-start w-100">
+                            <p className="mb-0 px-3">
+                                    Image:
+                                    <input
+                                        type="file"
+                                        className="form-control"
+                                        accept="image/*"
+                                        onChange={(e) => setImageFile(e.target.files[0])} 
+                                    />
+                                </p>
                                 <p className="mb-0 px-3">
                                     Asset Name: 
                                     <input
