@@ -18,8 +18,9 @@ export default function SearchBox() {
     const [date, setDate] = useState("2024-09-26"); 
     const [itemId, setItemId] = useState("");
 
-    // hold image url
+    // hold image url and files
     const [imageUrl, setImageUrl] = useState('');
+    const [imageFile, setImageFile] = useState(null);
 
     //image if no image attached to item
 
@@ -109,7 +110,25 @@ export default function SearchBox() {
         setImageUrl(item.image || default_image);
         setSelectedEmployee(employees.find(employee => employee.id === parseInt(item.holder)));
         console.log(imageUrl);
-    }
+    };
+
+    // when the image is clicked
+    const handleImageClick = () => {
+        // open local documents to find image
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        
+        fileInput.onchange = (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                setImageFile(file);
+                setImageUrl(URL.createObjectURL(file)); 
+            }
+        };
+        
+        fileInput.click();
+    };
 
 
     const handleEditButton = () => {
@@ -132,8 +151,19 @@ export default function SearchBox() {
                 ...(notes && { notes }),
             };
 
+            // put all in form data
+            const formData = new FormData();
+            Object.keys(updated).forEach(key => {
+                formData.append(key, updated[key]);
+            });
+
+            //if image uploaded, add
+            if (imageFile) {
+                formData.append('image', imageFile)
+            }
+
             // make put requeest to try replacing old asset with new one
-            await axios.put(`${process.env.REACT_APP_API_URL}assets/${selectedItem.id}/`, updated);
+            await axios.put(`${process.env.REACT_APP_API_URL}assets/${selectedItem.id}/`, formData);
 
             // refresh item list
             const res = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
@@ -226,6 +256,7 @@ export default function SearchBox() {
                                 className="img-fluid itemImage"
                                 alt="Item"
                                 style={{ height: '100%', maxHeight: '20vh', width: 'auto' }} 
+                                onClick = {handleImageClick}
                             />
                         </div>
                     </div>
