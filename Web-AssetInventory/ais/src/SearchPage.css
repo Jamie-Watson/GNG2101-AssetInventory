@@ -22,7 +22,7 @@
 }
 
 .result-container {
-    max-height: 50vh;
+    max-height: 45vh;
     overflow-y: auto; 
     display: flex;
     flex-wrap: wrap; 
