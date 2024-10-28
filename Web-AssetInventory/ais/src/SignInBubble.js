@@ -55,7 +55,7 @@ export default function SignInBubble({ onSignIn }) {
 
 
     return (
-        <div className="container justify-content-center noCursor" style={{ borderColor: '#d6d6d6', border: '2px solid', borderRadius: '10px', backgroundColor: "#fcfcfc" }}>
+        <div className="container justify-content-center noCursor bubble">
             <div className="row justify-content-center">
                 <div className="col-sm-6 justify-content-center colour-style-2 pt-5">
                     <div className="text-center">

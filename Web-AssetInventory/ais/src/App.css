@@ -39,6 +39,26 @@ p.display-5.textStyle{
   color: #384959;
 }
 
+p.smallTextStyle{
+  font-weight: 300;
+  font-size:small;
+  color: #384959;
+
+}
+
+p.largeTextStyle{
+  font-weight: 300;
+  font-size:large;
+  color: #384959;
+
+}
+
+p.mediumTextStyle{
+  font-weight: 300;
+  font-size:medium;
+  color: #384959;
+
+}
 .signInPageBackground{
   background-image: url('Images/doctors.png');
   background-size: cover; 
@@ -46,4 +66,22 @@ p.display-5.textStyle{
   background-repeat: no-repeat; 
   height: 100vh; 
   width: 100%; 
+}
+
+.instructionPageBackground{
+  background-image: url('Images/hospital.png');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  height: 100vh; 
+  width: 100%; 
+}
+
+.bubble{
+  border-color: #d6d6d6;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: #fcfcfc;
+
 }
