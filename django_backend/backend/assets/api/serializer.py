@@ -4,4 +4,19 @@ from ..models import Item
 class ItemSerializer(ModelSerializer):
     class Meta:
         model = Item
-        fields = ['id', 'itemName', 'itemId', 'manufacturer', 'location', 'available', 'holder', 'status', 'notes', 'dateTaken', 'image']
+        fields = [
+            'id', 
+            'itemName', 
+            'serialNumber', 
+            'manufacturer', 
+            'location', 
+            'available', 
+            'holder', 
+            'status', 
+            'notes', 
+            'dateTaken', 
+            'image',
+            'barcode',
+            'barcodeImage',
+            ]
+        read_only_fields = ['id', 'barcode', 'barcodeImage']

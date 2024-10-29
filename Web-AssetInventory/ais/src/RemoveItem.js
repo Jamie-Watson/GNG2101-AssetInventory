@@ -10,7 +10,7 @@ export default function RemoveItem(){
     const [items, setItems] = useState([]);
     const [itemName, setItemName] = useState('');
     const [verificationMessage, setVerificationMessage] = useState('');
-    const [itemId, setItemId] = useState('');
+    const [serialNumber, setSerialNumber] = useState('');
 
     // handle item data from API (grabbed from SearchBox.js file)
     useEffect(() => {
@@ -38,14 +38,14 @@ export default function RemoveItem(){
     const handleDelete = async () => {
         try {
 
-            const idToDelete = parseInt(itemId, 10);
+            const idToDelete = parseInt(serialNumber, 10);
             if (isNaN(idToDelete) || idToDelete === null) {
                 setVerificationMessage('Invalid ID.');
                 return;
             }
 
             // find item
-            const toDelete = items.find(item => item.itemId === idToDelete);
+            const toDelete = items.find(item => item.serialNumber === idToDelete);
 
             if (!toDelete) {
                 setVerificationMessage('Item not found.');
@@ -92,13 +92,13 @@ export default function RemoveItem(){
                     */}
                     <div className="col-12 mb-2"> 
                         <p className="mb-0">
-                            Asset Item Code: 
+                            Asset Serial Number: 
                             <input
                                 type="text"
                                 className="form-control d-inline-block"
-                                placeholder='Enter Asset Code'
-                                value = {itemId}
-                                onChange = {(e) => setItemId(e.target.value)}
+                                placeholder='Enter Asset Serial Number'
+                                value = {serialNumber}
+                                onChange = {(e) => setSerialNumber(e.target.value)}
                             />        
                         </p>
                     </div>

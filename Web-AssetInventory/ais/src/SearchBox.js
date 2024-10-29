@@ -16,7 +16,8 @@ export default function SearchBox() {
     const [location, setLocation] = useState(''); 
     const [status, setStatus] = useState(""); 
     const [date, setDate] = useState(""); 
-    const [itemId, setItemId] = useState("");
+    const [serialNumber, setSerialNumber] = useState("");
+    const [barcode, setBarcode] = useState("")
 
     // hold image url and files
     const [imageUrl, setImageUrl] = useState('');
@@ -100,7 +101,7 @@ export default function SearchBox() {
     const handleItemSelect = (item) => {
         setSelectedItem(item);
         setItemName(item.itemName);
-        setItemId(item.itemId);
+        setSerialNumber(item.serialNumber);
         setManufacturer(item.manufacturer);
         setHolder(item.holder);
         setLocation(item.location);
@@ -109,7 +110,7 @@ export default function SearchBox() {
         setNotes(item.notes || "");
         setImageUrl(item.image || default_image);
         setSelectedEmployee(employees.find(employee => employee.id === parseInt(item.holder)));
-        console.log(imageUrl);
+        setBarcode(item.barcode || "");
     };
 
     // when the image is clicked
@@ -141,7 +142,7 @@ export default function SearchBox() {
         try {
             const updated = {
                 itemName,
-                itemId: parseInt(itemId, 10),
+                serialNumber: parseInt(serialNumber, 10),
                 status,
                 // only include these if they have a value
                 ...(date && {dateTaken : date}),
@@ -157,12 +158,12 @@ export default function SearchBox() {
                 formData.append(key, updated[key]);
             });
 
-            //if image uploaded, add
+            // if image uploaded, add
             if (imageFile) {
                 formData.append('image', imageFile)
             }
 
-            // make put requeest to try replacing old asset with new one
+            // make put request to try replacing old asset with new one
             await axios.put(`${process.env.REACT_APP_API_URL}assets/${selectedItem.id}/`, formData);
 
             // refresh item list
@@ -285,15 +286,15 @@ export default function SearchBox() {
                                     }
                             </p>
                             <p className="mb-0 px-5">
-                                Asset ID: {showEditOption ? (
+                                Serial Number: {showEditOption ? (
                                         <input
                                             type="text"
                                             className="form-control d-inline-block"
-                                            value={itemId}
-                                            onChange={(e) => setItemId(e.target.value)} 
+                                            value={serialNumber}
+                                            onChange={(e) => setSerialNumber(e.target.value)} 
                                         />
                                     ) : (
-                                        itemId
+                                        serialNumber
                                 )}
                             </p>
                             <p className="mb-0 px-5">
@@ -366,6 +367,13 @@ export default function SearchBox() {
                                 ) : (
                                     location
                                 )}
+                            </p>
+                            <p className="mb-0 px-5">
+                                {showEditOption ? null : "Barcode: "} {showEditOption ? null : barcode}
+                               
+                        
+                                    
+                             
                             </p>
                         </div>
                     </div>
