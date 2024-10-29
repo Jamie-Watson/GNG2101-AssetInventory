@@ -6,7 +6,7 @@ import axios from 'axios';
 export default function AddItem(){
 
     const [itemName, setItemName] = useState('');
-    const [itemId, setItemId] = useState('');
+    const [serialNumber, setSerialNumber] = useState('');
     const [status, setStatus] = useState('Available');
     const [date, setDate] = useState('');
     const [manufacturer, setManufacturer] = useState('');
@@ -49,7 +49,7 @@ export default function AddItem(){
         // create item
         const itemToAdd = {
             itemName,
-            itemId: parseInt(itemId, 10),
+            serialNumber: parseInt(serialNumber, 10),
             status,
             // only include these if they have a value
             ...(date && {dateTaken : date}),
@@ -78,16 +78,17 @@ export default function AddItem(){
 
             // reset fields
             setItemName('');
-            setItemId('');
+            setSerialNumber('');
             setStatus('Available');
             setDate('');
             setManufacturer('');
             setHolder('');
             setLocation('');
             setNotes('');
+            setImageFile(null);
 
         } catch (error){
-            setVerificationMessage('Error adding asset.', error);
+            setVerificationMessage(`Error adding asset.', ${error.response?.data?.detail || error.message}`);
         }
     }; 
 
@@ -118,12 +119,12 @@ export default function AddItem(){
                                     />
                                 </p>
                                 <p className="mb-0 px-3">
-                                    Asset Code: 
+                                    Serial Number: 
                                     <input
                                         type="text"
                                         className="form-control"
-                                        value={itemId}
-                                        onChange={(e) => setItemId(e.target.value)} 
+                                        value={serialNumber}
+                                        onChange={(e) => setSerialNumber(e.target.value)} 
                                     />
                                 </p>
                                 <p className="mb-0 px-3">

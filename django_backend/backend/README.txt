@@ -1,7 +1,6 @@
 ------------------------------------------------------------------------------
 
-GOTTA MAKE PYTHON viRTUAL ENVIRONMENT (venv) TO RUN BACKEND AND 
-GET ASSETS, CAN STILL LOGIN THOUGH
+GOTTA MAKE PYTHON ViRTUAL ENVIRONMENT (venv) TO RUN BACKEND SERVER
 
 download python and pip package if not already downloaded
 if on mac, use terminal instead of cmd prompt
@@ -41,12 +40,23 @@ TO RUN BACKEND SERVER (need to run to be able to login and stuff):
 
 ------------------------------------------------------------------------------
 
-django superuser info:
-  username: admin
-  email: admin@hospital.com
-  password: 123
+GETTING STARTED
 
-admin webpage: http://127.0.0.1:8000/admin/login/?next=/admin
+gotta make sure all the database stuff is synced and also that you have an admin account that will be used to login from the frontend
+if errors happen during this process let us know and we will try to fix
+
+  1. make sure you're in the django_backend/backend directory in cmd
+  2. run: py manage.py makemigrations
+  3. run: py manage.py migrate
+  4. run: py manage.py runserver
+  5. go to the api link listed below, go to the employee part and create one (don't fill in barcode and barcodeImage stuff, its automatic)
+  6. go back and then into the admin part and create one of those
+  7. if you're getting errors and you have a populated database, you may need to run py manage.py flush (THIS WILL REMOVE ALL DB DATA, BE CAREFUL)
+
+you should be good to login to the webpage now!
+
+
 api link: http://127.0.0.1:8000/api
+admin webpage: http://127.0.0.1:8000/admin/login/?next=/admin
 
 ------------------------------------------------------------------------------
