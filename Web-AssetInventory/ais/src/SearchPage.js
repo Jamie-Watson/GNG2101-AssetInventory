@@ -8,7 +8,7 @@ import { useState } from 'react';
 import RemoveItem from './RemoveItem';
 import AddItem from './AddItem';
 
-export default function SearchPage({username, handleSignOut, handleSearchPage}){
+export default function SearchPage({username, handleSignOut, handleSearchPage, handleScanPage}){
 
     const [isRemove, setRemove]= useState(false);
     const [isAdd, setAdd]= useState(false);
@@ -29,7 +29,7 @@ export default function SearchPage({username, handleSignOut, handleSearchPage}){
     };
     return(
         <div className="container searchPageContainer mb-5">
-             <Navbar username={username} handleSignOut={handleSignOut} handleSearch={handleSearchPage}/>
+             <Navbar username={username} handleSignOut={handleSignOut} handleSearch={handleSearchPage} handleScanPage={handleScanPage}/>
              <div className="container blueContainer">
                 <div className="row">
                     <SearchPageItemBar handleAdd={handleAdd} handleRemove={handleRemove}/>

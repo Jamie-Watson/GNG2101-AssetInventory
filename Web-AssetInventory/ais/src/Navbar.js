@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import './NavBar.css';
 import React from 'react';
 
-export default function Navbar({ username, handleSignOut, handleSearch }) {
+export default function Navbar({ username, handleSignOut, handleSearch, handleScanPage}) {
     return (
         <nav className="navbar navbar-expand-md navbar-light container-fluid d-flex justify-content-center noCursor">
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,7 +21,7 @@ export default function Navbar({ username, handleSignOut, handleSearch }) {
                         <button className="btn btn-primary lightBlueButton my-3" onClick={handleSearch}>Search/Edit</button>
                     </li>
                     <li className="nav-item mx-3">
-                        <button className="btn btn-primary lightBlueButton my-3" onClick={handleSignInClick}>Scan</button>
+                        <button className="btn btn-primary lightBlueButton my-3" onClick={handleScanPage}>Scan</button>
                     </li>
                 </ul>
             </div>
