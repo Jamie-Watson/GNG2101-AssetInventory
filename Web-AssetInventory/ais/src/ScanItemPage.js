@@ -1,7 +1,10 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from "./Navbar";
-import "./SearchPage.css"
+import "./SearchPage.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 
 export default function ScanItemPage({username, handleSignOut, handleSearchPage, handleScanPage}){
 

@@ -40,7 +40,7 @@ class Item(models.Model):
         unique = True,
         blank = True,
         null = True,
-        max_length = 7,
+        max_length = 8,
         )
     
     barcodeImage = models.ImageField(upload_to = 'barcodes/items/', null = True, blank = True)
@@ -50,7 +50,7 @@ class Item(models.Model):
         super().save(*args, **kwargs)  
         if not self.barcode:
             # creates barcode and saves barcode image when item created
-            self.barcode = f"1{self.pk:06d}" 
+            self.barcode = EAN8(f"1{self.pk:06d}").get_fullcode()
             barcodeImage = create_barcode_image(self.barcode)
             self.barcodeImage.save(f"{self.barcode}.png", barcodeImage, save = False)
             self.save()
