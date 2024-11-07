@@ -29,7 +29,7 @@ class Employee(models.Model):
         unique = True,
         blank = True,
         null = True,
-        max_length = 7,
+        max_length = 8,
         )
     
     barcodeImage = models.ImageField(upload_to = 'barcodes/employees/', null = True, blank = True)
@@ -39,7 +39,7 @@ class Employee(models.Model):
         super().save(*args, **kwargs)   
         # generate barcode based on id
         if not self.barcode: 
-            self.barcode = f"2{self.pk:06d}" 
+            self.barcode = EAN8(f"2{self.pk:06d}").get_fullcode() 
             # generate barcode image based on barcode
             barcodeImage = create_barcode_image(self.barcode)
             self.barcodeImage.save(f"{self.barcode}.png", barcodeImage, save = False)
