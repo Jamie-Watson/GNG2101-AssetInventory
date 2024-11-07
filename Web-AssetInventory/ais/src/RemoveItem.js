@@ -23,8 +23,8 @@ export default function RemoveItem(){
                 
                 // set fetched items
                 setItems(res.data);
-                console.log(items);
 
+            
             } catch (error) {
                 console.error('Data could not be fetched', error);
             }

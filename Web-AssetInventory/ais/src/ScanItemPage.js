@@ -8,6 +8,11 @@ import axios from 'axios';
 
 export default function ScanItemPage({username, handleSignOut, handleSearchPage, handleScanPage}){
 
+    //database info storage
+    const [items, setItems] = useState([]);
+    const [employees, setEmployees] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedEmployee, setSelectedEmployee] = useState(null);
 
     //states for saving barcode
     const [assetCode, setAssetCode] = useState("");
@@ -16,11 +21,47 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
     //barcode holder after scan
     const [barcode, setBarcode] = useState("");
     
+    useEffect(() => {
+
+        //fetching data from API
+        const fetchData = async() => {
+            try {
+                //collect data from this endpoint
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
+                
+                //set fetched items
+                setItems(res.data);
+
+            } catch (error) {
+                console.error('Data could not be fetched', error);
+            }
+        }
+
+        fetchData();
+
+    }, [])
+
+        // handle employee data from api
+    useEffect (() => {
+        // fetch data from API
+        const fetchData = async() => {
+            try {
+                // collect data
+                const res = await axios.get(`${process.env.REACT_APP_API_URL}employees/`);
+
+                // set 
+                setEmployees(res.data);
+
+            } catch (error) {
+                console.error('Data could not be fetched', error);
+            }
+        }
+        fetchData();
+
+    }, [])
 
     //try this by character implementation function
     useEffect(() => {
-
-     
 
         const handleInput = (e) => {
 
@@ -31,11 +72,17 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
 
             //when enter is pressed, barcode is done scanning
             if (e.key === "Enter") {
-                //based on starting value, save it to correct variable
-                if (barcode.startsWith("1")) {
+                //based on existing barcodes, save it to correct variable
+                if (items.includes(items.find(item => item.barcode === barcode))) {
                     setAssetCode(barcode);
-                } else if (barcode.startsWith("2")) {
+                    setSelectedItem(items.find(item => item.barcode === barcode));
+
+                } else if (employees.includes(employees.find(employee => employee.barcode === barcode))) {
                     setEmployeeCode(barcode);
+                    setSelectedEmployee(employees.find(employee => employee.barcode === barcode));
+
+                } else {
+                    //barcode not found
                 }
 
                 //reset holder state
@@ -60,8 +107,8 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
                 <div className="row">
                     SCANNNNN
                     <p>Scanned Barcode: {barcode}</p>
-                    <p>Scanned Asset Barcode: {assetCode}</p>
-                    <p>Scanned Employee Barcode: {employeeCode}</p>
+                    <p>Scanned Asset Barcode: {assetCode}, Asset: {!selectedItem ? null : selectedItem.itemName}</p>
+                    <p>Scanned Employee Barcode: {employeeCode}, Employee: {!selectedEmployee ? null : selectedEmployee.firstName + " " + selectedEmployee.lastName}</p>
                 </div>
             </div>    
         </div>
