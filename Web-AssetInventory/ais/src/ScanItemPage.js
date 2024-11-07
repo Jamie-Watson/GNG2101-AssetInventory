@@ -41,7 +41,7 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
 
     }, [])
 
-        // handle employee data from api
+    // handle employee data from api
     useEffect (() => {
         // fetch data from API
         const fetchData = async() => {
@@ -72,14 +72,18 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
 
             //when enter is pressed, barcode is done scanning
             if (e.key === "Enter") {
-                //based on existing barcodes, save it to correct variable
-                if (items.includes(items.find(item => item.barcode === barcode))) {
-                    setAssetCode(barcode);
-                    setSelectedItem(items.find(item => item.barcode === barcode));
 
-                } else if (employees.includes(employees.find(employee => employee.barcode === barcode))) {
-                    setEmployeeCode(barcode);
-                    setSelectedEmployee(employees.find(employee => employee.barcode === barcode));
+                //take only last 8 inputted values, ensures that if other buttons are pressed they are ignored
+                const accBarcode = barcode.slice(-8);
+
+                //based on existing barcodes, save it to correct variable
+                if (items.includes(items.find(item => item.barcode === accBarcode))) {
+                    setAssetCode(accBarcode);
+                    setSelectedItem(items.find(item => item.barcode === accBarcode));
+
+                } else if (employees.includes(employees.find(employee => employee.barcode === accBarcode))) {
+                    setEmployeeCode(accBarcode);
+                    setSelectedEmployee(employees.find(employee => employee.barcode === accBarcode));
 
                 } else {
                     //barcode not found
@@ -91,12 +95,12 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
         };
 
         // listens for keydown event
-        window.addEventListener('keydown', handleInput)
+        window.addEventListener('keydown', handleInput);
 
         // clean up event listener, ready for next key
         return () => {
-            window.removeEventListener('keydown', handleInput)
-        }
+            window.removeEventListener('keydown', handleInput);
+        };
 
     }, [barcode]);
 
@@ -116,4 +120,3 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
     );
 
 }
-
