@@ -104,6 +104,11 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
 
     }, [barcode]);
 
+    /**
+     * need to add assignment for when both an asset and employee are scanned
+     * check for if the employee already has asset, if it is that asset, if so then option to un check out
+     */
+
     return(
         <div className="container searchPageContainer mb-5">
              <Navbar username={username} handleSignOut={handleSignOut} handleSearch={handleSearchPage} handleScanPage={handleScanPage}/>
