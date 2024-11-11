@@ -32,7 +32,7 @@ export default function SearchPage({username, handleSignOut, handleSearchPage, h
              <Navbar username={username} handleSignOut={handleSignOut} handleSearch={handleSearchPage} handleScanPage={handleScanPage}/>
              <div className="container blueContainer">
                 <div className="row">
-                    <SearchPageItemBar handleAdd={handleAdd} handleRemove={handleRemove}/>
+                    <SearchPageItemBar handleAdd={handleAdd} handleRemove={handleRemove} handleSearch={handleSearch}/>
                 </div>
                 
                 {!isRemove && !isAdd ? (

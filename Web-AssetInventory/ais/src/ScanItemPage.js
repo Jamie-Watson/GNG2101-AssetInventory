@@ -22,10 +22,11 @@ export default function ScanItemPage({handleSignOut}){
     //barcode holder after scan
     const [barcode, setBarcode] = useState("");
 
+    const[itemNumber, setItemNumber]=useState("");
+
     const [isSignIn, setIsSignIn]=useState(false);
-    const [itemNumber, setItemNumber]=useState("");
     
-    const[process, setProcess] = useState(0);
+    const[scanProcess, setScanProcess] = useState(0);
     
     let signInInstructionText=[   "Welcome, the system is ready to sign in items. If you wish to sign out items, click the \"Sign Out Items\" button above.",
         "Please Scan your badge to start.",
@@ -45,12 +46,12 @@ export default function ScanItemPage({handleSignOut}){
 
     const handleSignItemIn =()=>{
         setIsSignIn(true);
-        setProcess(0);
+        setScanProcess(0);
     }
 
     const handleSignItemOut =()=>{
         setIsSignIn(false);
-        setProcess(0);
+        setScanProcess(0);
     }
 
     useEffect(() => {
@@ -142,7 +143,7 @@ export default function ScanItemPage({handleSignOut}){
         if (assetCode !== "" && employeeCode !== "") { //if two valid codes were found
             if(selectedEmployee.heldItem === null) { //if selected employee is not holding an item
                 if(selectedItem.holder === null) { //if item is not held by another employee can do assignment
-                    setTryAssignment(true);
+                    
                     handleAssignment();
                     console.log("1");
                 } else {
@@ -154,7 +155,7 @@ export default function ScanItemPage({handleSignOut}){
                 }
             } else { //selected employee is holding an item
                 if (selectedItem.id === selectedEmployee.heldItem) { //if that item is same as selected item, option to uncheckout
-                    setTryUncheckout(true);
+                  
                     handleUncheckout();
                     console.log("3");
                 } else {
@@ -233,8 +234,7 @@ export default function ScanItemPage({handleSignOut}){
         setAssetCode("");
         setEmployeeCode("");
         setBarcode("");
-        setTryAssignment(false);
-        setTryUncheckout(false);
+     
 
         // refresh item list
         const res1 = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
@@ -262,12 +262,10 @@ export default function ScanItemPage({handleSignOut}){
                     
                     <div className="col-sm-5 scanContainer mx-5 text-center" style={{minHeight:"50vh"}}>
 
-                        {isSignIn? <p className="display-5 scanText">{signInInstructionText[process]}</p>:<p>{signOutInstructionText[process]}</p> }
+                        {isSignIn? <p className="display-5 scanText">{signInInstructionText[scanProcess]}</p>:<p>{signOutInstructionText[scanProcess]}</p> }
                     </div>
                     <div className="col-sm-5 scanContainer mx-5" style={{minHeight:"50vh"}}>
-                        <p>Scanned Barcode: {barcode}</p>
-                        <p>Scanned Asset Barcode: {assetCode}</p>
-                        <p>Scanned Employee Barcode: {employeeCode}</p>     
+                        {selectedItem==null? <p>no item selected</p>:<p>{selectedItem.itemName}</p>}  
                     </div>
                 </div>
             </div>  
