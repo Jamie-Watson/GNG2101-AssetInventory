@@ -20,7 +20,15 @@ export default function ScanItemPage({handleSignOut}){
     const [itemNumber, setItemNumber]=useState("");
     
     const[process, setProcess] = useState(0);
-    let signInInstructionText=[   "Welcome, the system is ready to sign out items. If you wish to sign in items, click the \"Sign In Items\" button above.",
+    
+    let signInInstructionText=[   "Welcome, the system is ready to sign in items. If you wish to sign out items, click the \"Sign Out Items\" button above.",
+        "Please Scan your badge to start.",
+        "You have scanned your badge, please scan the item you wish to sign in.",
+        "You have scanned item: "+{itemNumber}+". Please scan your badge again to confirm.",
+        "Item has been signed in. You are good to go."
+    ];
+
+    let signOutInstructionText=[   "Welcome, the system is ready to sign out items. If you wish to sign in items, click the \"Sign In Items\" button above.",
         "Please Scan your badge to start.",
         "You have scanned your badge, please scan the item you wish to sign out.",
         "You have scanned item: "+{itemNumber}+". Please scan your badge again to confirm.",
@@ -30,11 +38,13 @@ export default function ScanItemPage({handleSignOut}){
     //try this by character implementation function
 
     const handleSignItemIn =()=>{
-
+        setIsSignIn(true);
+        setProcess(0);
     }
 
     const handleSignItemOut =()=>{
-
+        setIsSignIn(false);
+        setProcess(0);
     }
     useEffect(() => {
 
@@ -80,8 +90,9 @@ export default function ScanItemPage({handleSignOut}){
                 </div>
                 <div className="row justify-content-center align-items-center h-100" style={{minHeight:"80vh"}}>
                     
-                    <div className="col-sm-5 scanContainer mx-5 " style={{minHeight:"50vh"}}>
-                        <p>{signInInstructionText[process]}</p>
+                    <div className="col-sm-5 scanContainer mx-5 text-center" style={{minHeight:"50vh"}}>
+
+                        {isSignIn? <p className="display-5 scanText">{signInInstructionText[process]}</p>:<p>{signOutInstructionText[process]}</p> }
                     </div>
                     <div className="col-sm-5 scanContainer mx-5" style={{minHeight:"50vh"}}>
                         <p>Scanned Barcode: {barcode}</p>

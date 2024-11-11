@@ -85,3 +85,8 @@ p.mediumTextStyle{
   background-color: #fcfcfc;
 
 }
+
+p.display-5.scanText{
+  font-size:x-large;
+  color: #384959;
+}
