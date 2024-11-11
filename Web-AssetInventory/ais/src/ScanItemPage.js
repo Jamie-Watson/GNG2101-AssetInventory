@@ -42,8 +42,6 @@ export default function ScanItemPage({handleSignOut}){
         "Item has been signed out. You are good to go."
     ];
 
-    //try this by character implementation function
-
     const handleSignItemIn =()=>{
         setIsSignIn(true);
         setScanProcess(0);
@@ -142,21 +140,21 @@ export default function ScanItemPage({handleSignOut}){
     useEffect(() => {
         if (assetCode !== "" && employeeCode !== "") { //if two valid codes were found
             if(selectedEmployee.heldItem === null) { //if selected employee is not holding an item
-                if(selectedItem.holder === null) { //if item is not held by another employee can do assignment
+                if(selectedItem.holder === null && isSignIn) { //if item is not held by another employee and on sign in page, can do check in
                     
-                    handleAssignment();
+                    handleCheckIn();
                     console.log("1");
                 } else {
                     //error message: item held by another employee
-                    //this is most likely a mistake as if the asset is able to be scanned, then an another employee should not have it checked out
+                    //this is most likely a mistake as, if the asset is able to be scanned, then another employee should not have it checked out
                     //when this happens, maybe make option to remove it from them
                     clearFields();
                     console.log("2");
                 }
             } else { //selected employee is holding an item
-                if (selectedItem.id === selectedEmployee.heldItem) { //if that item is same as selected item, option to uncheckout
+                if (selectedItem.id === selectedEmployee.heldItem && !isSignIn) { //if that item is same as selected item and on sign out page, option to check uot
                   
-                    handleUncheckout();
+                    handleCheckout();
                     console.log("3");
                 } else {
                     //error message: employee is holding a different item
@@ -168,7 +166,7 @@ export default function ScanItemPage({handleSignOut}){
     });
 
     // handle item assignment
-    const handleAssignment = async() => {
+    const handleCheckIn = async() => {
 
         try {
             //new data for asset
@@ -200,7 +198,7 @@ export default function ScanItemPage({handleSignOut}){
         clearFields();
     }
 
-    const handleUncheckout = async() => {
+    const handleCheckout = async() => {
 
         try {
             //new data for asset
@@ -234,7 +232,8 @@ export default function ScanItemPage({handleSignOut}){
         setAssetCode("");
         setEmployeeCode("");
         setBarcode("");
-     
+        setSelectedEmployee(null);
+        setSelectedItem(null);
 
         // refresh item list
         const res1 = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
