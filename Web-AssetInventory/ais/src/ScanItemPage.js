@@ -1,12 +1,13 @@
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from "./Navbar";
+import ScanPageNavbar from "./ScanPageNavbar";
 import "./SearchPage.css";
+import "./ScanPage.css";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ScanPageToggler from './ScanPageToggler';
 
-
-export default function ScanItemPage({username, handleSignOut, handleSearchPage, handleScanPage}) {
+export default function ScanItemPage({handleSignOut}){
 
     //database info storage
     const [items, setItems] = useState([]);
@@ -21,9 +22,27 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
     //barcode holder after scan
     const [barcode, setBarcode] = useState("");
 
-    const [tryAssignment, setTryAssignment] = useState(false);
-    const [tryUncheckout, setTryUncheckout] = useState(false);
+    const [isSignIn, setIsSignIn]=useState(false);
+    const [itemNumber, setItemNumber]=useState("");
     
+    const[process, setProcess] = useState(0);
+    let signInInstructionText=[   "Welcome, the system is ready to sign out items. If you wish to sign in items, click the \"Sign In Items\" button above.",
+        "Please Scan your badge to start.",
+        "You have scanned your badge, please scan the item you wish to sign out.",
+        "You have scanned item: "+{itemNumber}+". Please scan your badge again to confirm.",
+        "Item has been signed out. You are good to go."
+    ];
+
+    //try this by character implementation function
+
+    const handleSignItemIn =()=>{
+
+    }
+
+    const handleSignItemOut =()=>{
+
+    }
+
     useEffect(() => {
 
         //fetching data from API
@@ -224,17 +243,23 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
 
     return(
         <div className="container searchPageContainer mb-5">
-             <Navbar username={username} handleSignOut={handleSignOut} handleSearch={handleSearchPage} handleScanPage={handleScanPage}/>
-             <div className="container blueContainer">
-                <div className="row">
-                    SCANNNNN
-                    <p>Scanned Barcode: {barcode}</p>
-                    <p>Scanned Asset Barcode: {assetCode}, Asset: {!selectedItem ? null : selectedItem.itemName}</p>
-                    <p>Scanned Employee Barcode: {employeeCode}, Employee: {!selectedEmployee ? null : selectedEmployee.firstName + " " + selectedEmployee.lastName}</p>
-                    <p>Employee assigned to item: {selectedItem ? selectedItem.holder : null } </p>
-                    <p>Item assigned to employee: {selectedEmployee ?  selectedEmployee.heldItem : null} </p>
+            <ScanPageNavbar handleSignOut={handleSignOut}/>
+            <div className="container backgroundContainer justify-content-center">
+                <div className="row justify-content-center">
+                    <ScanPageToggler handleSignItemIn={handleSignItemIn} handleSignItemOut={handleSignItemOut}/>
                 </div>
-            </div>    
+                <div className="row justify-content-center align-items-center h-100" style={{minHeight:"80vh"}}>
+                    
+                    <div className="col-sm-5 scanContainer mx-5 " style={{minHeight:"50vh"}}>
+                        <p>{signInInstructionText[process]}</p>
+                    </div>
+                    <div className="col-sm-5 scanContainer mx-5" style={{minHeight:"50vh"}}>
+                        <p>Scanned Barcode: {barcode}</p>
+                        <p>Scanned Asset Barcode: {assetCode}</p>
+                        <p>Scanned Employee Barcode: {employeeCode}</p>     
+                    </div>
+                </div>
+            </div>  
         </div>
         
     );
