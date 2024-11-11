@@ -1,0 +1,19 @@
+.backgroundContainer{
+    min-height: 80vh;
+    border-radius: 8px;
+    background-image: url('Images/ScanBackground.png');
+    background-size: cover; 
+     background-position: center; 
+    background-repeat: no-repeat; 
+}
+
+.scanContainer{
+    max-height: 45vh;
+    overflow-y: auto; 
+    display: flex;
+    flex-wrap: wrap; 
+    padding: 10px; 
+    border: 1px solid #ddd; 
+    background-color: #f9f9f9; 
+    border-radius: 8px;
+}

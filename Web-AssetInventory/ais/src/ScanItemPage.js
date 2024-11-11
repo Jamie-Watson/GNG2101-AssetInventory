@@ -2,9 +2,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ScanPageNavbar from "./ScanPageNavbar";
 import "./SearchPage.css";
+import "./ScanPage.css";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import ScanPageToggler from './ScanPageToggler';
 
 export default function ScanItemPage({handleSignOut}){
 
@@ -15,9 +16,26 @@ export default function ScanItemPage({handleSignOut}){
 
     //barcode holder after scan
     const [barcode, setBarcode] = useState("");
+    const [isSignIn, setIsSignIn]=useState(false);
+    const [itemNumber, setItemNumber]=useState("");
     
+    const[process, setProcess] = useState(0);
+    let signInInstructionText=[   "Welcome, the system is ready to sign out items. If you wish to sign in items, click the \"Sign In Items\" button above.",
+        "Please Scan your badge to start.",
+        "You have scanned your badge, please scan the item you wish to sign out.",
+        "You have scanned item: "+{itemNumber}+". Please scan your badge again to confirm.",
+        "Item has been signed out. You are good to go."
+    ];
 
     //try this by character implementation function
+
+    const handleSignItemIn =()=>{
+
+    }
+
+    const handleSignItemOut =()=>{
+
+    }
     useEffect(() => {
 
      
@@ -55,15 +73,23 @@ export default function ScanItemPage({handleSignOut}){
 
     return(
         <div className="container searchPageContainer mb-5">
-             <ScanPageNavbar handleSignOut={handleSignOut}/>
-             <div className="container blueContainer">
-                <div className="row">
-                    SCANNNNN
-                    <p>Scanned Barcode: {barcode}</p>
-                    <p>Scanned Asset Barcode: {assetCode}</p>
-                    <p>Scanned Employee Barcode: {employeeCode}</p>
+            <ScanPageNavbar handleSignOut={handleSignOut}/>
+            <div className="container backgroundContainer justify-content-center">
+                <div className="row justify-content-center">
+                    <ScanPageToggler handleSignItemIn={handleSignItemIn} handleSignItemOut={handleSignItemOut}/>
                 </div>
-            </div>    
+                <div className="row justify-content-center align-items-center h-100" style={{minHeight:"80vh"}}>
+                    
+                    <div className="col-sm-5 scanContainer mx-5 " style={{minHeight:"50vh"}}>
+                        <p>{signInInstructionText[process]}</p>
+                    </div>
+                    <div className="col-sm-5 scanContainer mx-5" style={{minHeight:"50vh"}}>
+                        <p>Scanned Barcode: {barcode}</p>
+                        <p>Scanned Asset Barcode: {assetCode}</p>
+                        <p>Scanned Employee Barcode: {employeeCode}</p>     
+                    </div>
+                </div>
+            </div>  
         </div>
         
     );
