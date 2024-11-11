@@ -34,6 +34,9 @@ class Employee(models.Model):
     
     barcodeImage = models.ImageField(upload_to = 'barcodes/employees/', null = True, blank = True)
 
+    # item that thign is holding
+    heldItem = models.ForeignKey('assets.Item', null = True, blank = True, on_delete = models.SET_NULL)
+
     #override save function so that barcode photos will be added every time item is added to db
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)   
