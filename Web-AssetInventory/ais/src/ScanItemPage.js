@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-export default function ScanItemPage({username, handleSignOut, handleSearchPage, handleScanPage}){
+export default function ScanItemPage({username, handleSignOut, handleSearchPage, handleScanPage}) {
 
     //database info storage
     const [items, setItems] = useState([]);
@@ -15,16 +15,19 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
     const [selectedEmployee, setSelectedEmployee] = useState(null);
 
     //states for saving barcode
-    const [assetCode, setAssetCode] = useState("");
+    const [assetCode, setAssetCode] = useState(null);
     const [employeeCode, setEmployeeCode] = useState("");
 
     //barcode holder after scan
     const [barcode, setBarcode] = useState("");
+
+    const [tryAssignment, setTryAssignment] = useState(false);
+    const [tryUncheckout, setTryUncheckout] = useState(false);
     
     useEffect(() => {
 
         //fetching data from API
-        const fetchData = async() => {
+        const fetchDataAsset = async() => {
             try {
                 //collect data from this endpoint
                 const res = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
@@ -37,14 +40,14 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
             }
         }
 
-        fetchData();
+        fetchDataAsset();
 
     }, [])
 
     // handle employee data from api
     useEffect (() => {
         // fetch data from API
-        const fetchData = async() => {
+        const fetchDataEmployee = async() => {
             try {
                 // collect data
                 const res = await axios.get(`${process.env.REACT_APP_API_URL}employees/`);
@@ -56,11 +59,11 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
                 console.error('Data could not be fetched', error);
             }
         }
-        fetchData();
+
+        fetchDataEmployee();
 
     }, [])
 
-    //try this by character implementation function
     useEffect(() => {
 
         const handleInput = (e) => {
@@ -86,23 +89,133 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
                     setSelectedEmployee(employees.find(employee => employee.barcode === accBarcode));
 
                 } else {
-                    //barcode not found
+                    console.log("not found");
                 }
 
                 //reset holder state
                 setBarcode("");
+
             }
         };
 
         // listens for keydown event
         window.addEventListener('keydown', handleInput);
-
+        
         // clean up event listener, ready for next key
         return () => {
             window.removeEventListener('keydown', handleInput);
         };
 
     }, [barcode]);
+
+    //check if can try item assignment
+    useEffect(() => {
+        if (assetCode !== "" && employeeCode !== "") { //if two valid codes were found
+            if(selectedEmployee.heldItem === null) { //if selected employee is not holding an item
+                if(selectedItem.holder === null) { //if item is not held by another employee can do assignment
+                    setTryAssignment(true);
+                    handleAssignment();
+                    console.log("1");
+                } else {
+                    //error message: item held by another employee
+                    //this is most likely a mistake as if the asset is able to be scanned, then an another employee should not have it checked out
+                    //when this happens, maybe make option to remove it from them
+                    clearFields();
+                    console.log("2");
+                }
+            } else { //selected employee is holding an item
+                if (selectedItem.id === selectedEmployee.heldItem) { //if that item is same as selected item, option to uncheckout
+                    setTryUncheckout(true);
+                    handleUncheckout();
+                    console.log("3");
+                } else {
+                    //error message: employee is holding a different item
+                    clearFields()
+                    console.log("4");
+                }
+            }
+        } 
+    });
+
+    // handle item assignment
+    const handleAssignment = async() => {
+
+        try {
+            //new data for asset
+            const newAsset = {
+                itemName: selectedItem.itemName,
+                serialNumber: selectedItem.serialNumber,
+                status: "Checked Out",
+                holder: selectedEmployee.id,
+            };
+
+            console.log("new asset: ", newAsset);
+
+            //asset put request
+            await axios.put(`${process.env.REACT_APP_API_URL}assets/${selectedItem.id}/`, newAsset);
+
+            //new data for employee
+            const newEmployee = {
+                heldItem: selectedItem.id,  
+            };
+
+            //employee put request
+            await axios.put(`${process.env.REACT_APP_API_URL}employees/${selectedEmployee.id}/`, newEmployee);
+
+
+        } catch (error) {
+            console.log("error assigning");
+        }
+
+        clearFields();
+    }
+
+    const handleUncheckout = async() => {
+
+        try {
+            //new data for asset
+            const newAsset = {
+                itemName: selectedItem.itemName,
+                serialNumber: selectedItem.serialNumber,
+                status: "Available",
+                holder: null,  
+            };
+
+            //asset put request
+            await axios.put(`${process.env.REACT_APP_API_URL}assets/${selectedItem.id}/`, newAsset);
+
+            //new data for employee
+            const newEmployee = {
+                heldItem: null,  
+            };
+
+            //employee put request
+            await axios.put(`${process.env.REACT_APP_API_URL}employees/${selectedEmployee.id}/`, newEmployee);
+
+
+        } catch (error) {
+            console.log("error un checking out");
+        }
+
+        clearFields();
+    }
+
+    const clearFields = async() => {
+        setAssetCode("");
+        setEmployeeCode("");
+        setBarcode("");
+        setTryAssignment(false);
+        setTryUncheckout(false);
+
+        // refresh item list
+        const res1 = await axios.get(`${process.env.REACT_APP_API_URL}assets/`);
+        setItems(res1.data);
+
+        // refresh employee list
+        const res2 = await axios.get(`${process.env.REACT_APP_API_URL}employees/`);
+        setEmployees(res2.data);
+    }
+    
 
     /**
      * need to add assignment for when both an asset and employee are scanned
@@ -118,6 +231,8 @@ export default function ScanItemPage({username, handleSignOut, handleSearchPage,
                     <p>Scanned Barcode: {barcode}</p>
                     <p>Scanned Asset Barcode: {assetCode}, Asset: {!selectedItem ? null : selectedItem.itemName}</p>
                     <p>Scanned Employee Barcode: {employeeCode}, Employee: {!selectedEmployee ? null : selectedEmployee.firstName + " " + selectedEmployee.lastName}</p>
+                    <p>Employee assigned to item: {selectedItem ? selectedItem.holder : null } </p>
+                    <p>Item assigned to employee: {selectedEmployee ?  selectedEmployee.heldItem : null} </p>
                 </div>
             </div>    
         </div>
