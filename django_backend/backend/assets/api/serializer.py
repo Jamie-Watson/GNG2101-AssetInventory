@@ -17,5 +17,7 @@ class ItemSerializer(ModelSerializer):
             'image',
             'barcode',
             'barcodeImage',
+            'timeTaken',
+            'expirationDate',
             ]
         read_only_fields = ['id', 'barcode', 'barcodeImage']

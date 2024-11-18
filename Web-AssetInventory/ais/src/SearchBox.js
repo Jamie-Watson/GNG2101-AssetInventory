@@ -17,6 +17,8 @@ export default function SearchBox() {
     const [status, setStatus] = useState(""); 
     const [date, setDate] = useState(""); 
     const [barcode, setBarcode] = useState("")
+    const [dateCheckedOut, setDateCheckedOut] = useState("");
+    const [timeCheckedOut, setTimeCheckedOut] = useState("");
 
     // hold image url and files
     const [imageUrl, setImageUrl] = useState('');
@@ -104,7 +106,9 @@ export default function SearchBox() {
         setHolder(item.holder);
         setLocation(item.location);
         setStatus(item.status);
-        setDate(item.dateTaken || "");
+        setDate(item.expirationDate || "");
+        setDateCheckedOut(item)
+        setTimeCheckedOut()
         setNotes(item.notes || "");
         setImageUrl(item.image || default_image);
         setSelectedEmployee(employees.find(employee => employee.id === parseInt(item.holder)));
@@ -142,7 +146,7 @@ export default function SearchBox() {
                 itemName,
                 status,
                 // only include these if they have a value
-                ...(date && {dateTaken : date}),
+                ...(date && { expirationDate : date }),
                 ...(manufacturer && { manufacturer }),
                 ...(holder && { holder }),
                 ...(location && { location }),
@@ -303,7 +307,7 @@ export default function SearchBox() {
                                 )}
                             </p>
                             <p className="mb-0 px-5">
-                                Date: {showEditOption ? (
+                                Expiration Date: {showEditOption ? (
                                     <input
                                         type="date"
                                         className="form-control d-inline-block"

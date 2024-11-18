@@ -32,6 +32,8 @@ class Item(models.Model):
     status = models.CharField(default = 'Available', max_length = 255)
     notes = models.TextField(default = None, null = True, max_length = 500)
     dateTaken = models.DateField(default = None, null = True)
+    timeTaken = models.TimeField(default = None, null = True, blank = True)
+    expirationDate = models.DateField(default = None, null = True, blank = True)
     image = models.ImageField(upload_to = 'photos/', null = True, blank = True)
 
     #barcode stuff

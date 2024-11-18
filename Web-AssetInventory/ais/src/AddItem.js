@@ -49,7 +49,7 @@ export default function AddItem(){
             itemName,
             status,
             // only include these if they have a value
-            ...(date && {dateTaken : date}),
+            ...(date && {expirationDate : date}),
             ...(manufacturer && { manufacturer }),
             ...(holder && { holder }),
             ...(location && { location }),
@@ -128,7 +128,7 @@ export default function AddItem(){
                                     </select>
                                 </p>
                                 <p className="mb-0 px-3">
-                                    Date: 
+                                    Expiration Date: 
                                     <input
                                         type="date"
                                         className="form-control"
