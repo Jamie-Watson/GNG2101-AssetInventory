@@ -6,8 +6,7 @@ class ItemSerializer(ModelSerializer):
         model = Item
         fields = [
             'id', 
-            'itemName', 
-            'serialNumber', 
+            'itemName',  
             'manufacturer', 
             'location', 
             'available', 

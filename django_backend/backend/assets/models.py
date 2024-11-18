@@ -23,7 +23,6 @@ def create_barcode_image(barcode):
 
 class Item(models.Model):
     itemName = models.CharField(max_length = 255)
-    serialNumber = models.IntegerField(unique = True, default = None)
     manufacturer = models.CharField(blank = True, max_length = 255)
     location = models.CharField(blank = True, max_length = 255)
     available = models.BooleanField(default = True)
