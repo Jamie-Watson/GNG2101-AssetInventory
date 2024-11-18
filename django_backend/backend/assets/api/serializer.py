@@ -6,8 +6,7 @@ class ItemSerializer(ModelSerializer):
         model = Item
         fields = [
             'id', 
-            'itemName', 
-            'serialNumber', 
+            'itemName',  
             'manufacturer', 
             'location', 
             'available', 
@@ -18,5 +17,7 @@ class ItemSerializer(ModelSerializer):
             'image',
             'barcode',
             'barcodeImage',
+            'timeTaken',
+            'expirationDate',
             ]
         read_only_fields = ['id', 'barcode', 'barcodeImage']

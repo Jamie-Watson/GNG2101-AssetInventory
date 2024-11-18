@@ -16,8 +16,9 @@ export default function SearchBox() {
     const [location, setLocation] = useState(''); 
     const [status, setStatus] = useState(""); 
     const [date, setDate] = useState(""); 
-    const [serialNumber, setSerialNumber] = useState("");
     const [barcode, setBarcode] = useState("")
+    const [dateCheckedOut, setDateCheckedOut] = useState("");
+    const [timeCheckedOut, setTimeCheckedOut] = useState("");
 
     // hold image url and files
     const [imageUrl, setImageUrl] = useState('');
@@ -101,12 +102,13 @@ export default function SearchBox() {
     const handleItemSelect = (item) => {
         setSelectedItem(item);
         setItemName(item.itemName);
-        setSerialNumber(item.serialNumber);
         setManufacturer(item.manufacturer);
         setHolder(item.holder);
         setLocation(item.location);
         setStatus(item.status);
-        setDate(item.dateTaken || "");
+        setDate(item.expirationDate || "");
+        setDateCheckedOut(item)
+        setTimeCheckedOut()
         setNotes(item.notes || "");
         setImageUrl(item.image || default_image);
         setSelectedEmployee(employees.find(employee => employee.id === parseInt(item.holder)));
@@ -142,10 +144,9 @@ export default function SearchBox() {
         try {
             const updated = {
                 itemName,
-                serialNumber: parseInt(serialNumber, 10),
                 status,
                 // only include these if they have a value
-                ...(date && {dateTaken : date}),
+                ...(date && { expirationDate : date }),
                 ...(manufacturer && { manufacturer }),
                 ...(holder && { holder }),
                 ...(location && { location }),
@@ -286,16 +287,7 @@ export default function SearchBox() {
                                     }
                             </p>
                             <p className="mb-0 px-5">
-                                Serial Number: {showEditOption ? (
-                                        <input
-                                            type="text"
-                                            className="form-control d-inline-block"
-                                            value={serialNumber}
-                                            onChange={(e) => setSerialNumber(e.target.value)} 
-                                        />
-                                    ) : (
-                                        serialNumber
-                                )}
+                                {showEditOption ? null : "Serial Number: "} {showEditOption ? null : barcode}
                             </p>
                             <p className="mb-0 px-5">
                                 Status: {showEditOption ? (
@@ -315,7 +307,7 @@ export default function SearchBox() {
                                 )}
                             </p>
                             <p className="mb-0 px-5">
-                                Date: {showEditOption ? (
+                                Expiration Date: {showEditOption ? (
                                     <input
                                         type="date"
                                         className="form-control d-inline-block"
@@ -367,13 +359,6 @@ export default function SearchBox() {
                                 ) : (
                                     location
                                 )}
-                            </p>
-                            <p className="mb-0 px-5">
-                                {showEditOption ? null : "Barcode: "} {showEditOption ? null : barcode}
-                               
-                        
-                                    
-                             
                             </p>
                         </div>
                     </div>

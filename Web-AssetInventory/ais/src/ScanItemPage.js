@@ -22,8 +22,6 @@ export default function ScanItemPage({handleSignOut}){
     //barcode holder after scan
     const [barcode, setBarcode] = useState("");
 
-    const[itemNumber, setItemNumber]=useState("");
-
     const [isSignIn, setIsSignIn]=useState(false);
     
     const[scanProcess, setScanProcess] = useState(0);
@@ -35,13 +33,13 @@ export default function ScanItemPage({handleSignOut}){
     
     let signInInstructionText=[   "Welcome, the system is ready to sign in items. If you wish to sign out items, click the \"Sign Out Items\" button above \nPlease Scan your badge to start.",
         "You have scanned your badge, please scan the item you wish to sign in.",
-        "You have scanned item: " + itemNumber + ". Please scan your badge again to confirm.",
+        "You have scanned item: " + barcode + ". Please scan your badge again to confirm.",
         "Item has been signed in. You are good to go."
     ];
 
     let signOutInstructionText=[   "Welcome, the system is ready to sign out items. If you wish to sign in items, click the \"Sign In Items\" button above. \nPlease Scan your badge to start.",
         "You have scanned your badge, please scan the item you wish to sign out.",
-        "You have scanned item: "+ itemNumber +". Please scan your badge again to confirm.",
+        "You have scanned item: "+ barcode +". Please scan your badge again to confirm.",
         "Item has been signed out. You are good to go."
     ];
 
@@ -204,8 +202,6 @@ export default function ScanItemPage({handleSignOut}){
             setCurrentInstructions(signOutInstructionText[3]);
             await delay(5000);
             setCurrentInstructions(signOutInstructionText[0]);
-
-            
         }
         else{
             setCurrentInstructions(signInInstructionText[3]);
@@ -256,7 +252,6 @@ export default function ScanItemPage({handleSignOut}){
             //new data for asset
             const newAsset = {
                 itemName: selectedItem.itemName,
-                serialNumber: selectedItem.serialNumber,
                 status: "Checked Out",
                 holder: selectedEmployee.id,
             };
@@ -287,7 +282,6 @@ export default function ScanItemPage({handleSignOut}){
             //new data for asset
             const newAsset = {
                 itemName: selectedItem.itemName,
-                serialNumber: selectedItem.serialNumber,
                 status: "Available",
                 holder: null,  
             };
@@ -363,7 +357,6 @@ export default function ScanItemPage({handleSignOut}){
                             </div>
                             <div className="row">
                                 <div className="text-start">
-                                <p className="mb-0 px-5">Serial Number: {selectedItem.serialNumber}</p>
                                 <p className="mb-0 px-5">Status:  {selectedItem.status}</p>
                                 <p className="mb-0 px-5"> Date:  {selectedItem.dateTaken}</p>
                                 <p className="mb-0 px-5">Manufacturer:  {selectedItem.manufacturer}</p>
