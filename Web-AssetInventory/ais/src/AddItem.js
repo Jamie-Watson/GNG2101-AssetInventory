@@ -6,7 +6,6 @@ import axios from 'axios';
 export default function AddItem(){
 
     const [itemName, setItemName] = useState('');
-    const [serialNumber, setSerialNumber] = useState('');
     const [status, setStatus] = useState('Available');
     const [date, setDate] = useState('');
     const [manufacturer, setManufacturer] = useState('');
@@ -48,10 +47,9 @@ export default function AddItem(){
         // create item
         const itemToAdd = {
             itemName,
-            serialNumber: parseInt(serialNumber, 10),
             status,
             // only include these if they have a value
-            ...(date && {dateTaken : date}),
+            ...(date && {expirationDate : date}),
             ...(manufacturer && { manufacturer }),
             ...(holder && { holder }),
             ...(location && { location }),
@@ -77,7 +75,6 @@ export default function AddItem(){
 
             // reset fields
             setItemName('');
-            setSerialNumber('');
             setStatus('Available');
             setDate('');
             setManufacturer('');
@@ -118,15 +115,6 @@ export default function AddItem(){
                                     />
                                 </p>
                                 <p className="mb-0 px-3">
-                                    Serial Number: 
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        value={serialNumber}
-                                        onChange={(e) => setSerialNumber(e.target.value)} 
-                                    />
-                                </p>
-                                <p className="mb-0 px-3">
                                     Status: 
                                     <select
                                         className="form-control"
@@ -140,7 +128,7 @@ export default function AddItem(){
                                     </select>
                                 </p>
                                 <p className="mb-0 px-3">
-                                    Date: 
+                                    Expiration Date: 
                                     <input
                                         type="date"
                                         className="form-control"
