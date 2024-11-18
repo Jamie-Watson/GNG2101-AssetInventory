@@ -15,7 +15,6 @@ export default function AddItem(){
     const [notes, setNotes] = useState('');
     const [verificationMessage, setVerificationMessage] = useState('');
     const [imageFile, setImageFile] = useState(null);
-
     const [employees, setEmployees] = useState([]);
 
     // handle employee data from api

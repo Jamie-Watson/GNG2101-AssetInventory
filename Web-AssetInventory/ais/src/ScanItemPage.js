@@ -16,7 +16,7 @@ export default function ScanItemPage({handleSignOut}){
     const [selectedEmployee, setSelectedEmployee] = useState(null);
 
     //states for saving barcode
-    const [assetCode, setAssetCode] = useState(null);
+    const [assetCode, setAssetCode] = useState("");
     const [employeeCode, setEmployeeCode] = useState("");
 
     //barcode holder after scan
@@ -27,31 +27,38 @@ export default function ScanItemPage({handleSignOut}){
     const [isSignIn, setIsSignIn]=useState(false);
     
     const[scanProcess, setScanProcess] = useState(0);
+
+    let mistakeText=["Please ensure that you are scanning your badge",
+         "Please ensure that you are scanning your asset",
+          "Your asset has already been signed out",
+           "Your asset has already been signed in"];
     
-    let signInInstructionText=[   "Welcome, the system is ready to sign in items. If you wish to sign out items, click the \"Sign Out Items\" button above.",
-        "Please Scan your badge to start.",
+    let signInInstructionText=[   "Welcome, the system is ready to sign in items. If you wish to sign out items, click the \"Sign Out Items\" button above \nPlease Scan your badge to start.",
         "You have scanned your badge, please scan the item you wish to sign in.",
-        "You have scanned item: "+{itemNumber}+". Please scan your badge again to confirm.",
+        "You have scanned item: " + itemNumber + ". Please scan your badge again to confirm.",
         "Item has been signed in. You are good to go."
     ];
 
-    let signOutInstructionText=[   "Welcome, the system is ready to sign out items. If you wish to sign in items, click the \"Sign In Items\" button above.",
-        "Please Scan your badge to start.",
+    let signOutInstructionText=[   "Welcome, the system is ready to sign out items. If you wish to sign in items, click the \"Sign In Items\" button above. \nPlease Scan your badge to start.",
         "You have scanned your badge, please scan the item you wish to sign out.",
-        "You have scanned item: "+{itemNumber}+". Please scan your badge again to confirm.",
+        "You have scanned item: "+ itemNumber +". Please scan your badge again to confirm.",
         "Item has been signed out. You are good to go."
     ];
 
+
+    const[currentInstrcutions, setCurrentInstructions]=useState(signInInstructionText[0]);
     //try this by character implementation function
 
     const handleSignItemIn =()=>{
         setIsSignIn(true);
         setScanProcess(0);
+        setCurrentInstructions(signInInstructionText[0]);    
     }
 
     const handleSignItemOut =()=>{
         setIsSignIn(false);
         setScanProcess(0);
+        setCurrentInstructions(signOutInstructionText[0]);    
     }
 
     useEffect(() => {
@@ -111,12 +118,52 @@ export default function ScanItemPage({handleSignOut}){
 
                 //based on existing barcodes, save it to correct variable
                 if (items.includes(items.find(item => item.barcode === accBarcode))) {
-                    setAssetCode(accBarcode);
-                    setSelectedItem(items.find(item => item.barcode === accBarcode));
+
+                    if(scanProcess===1){
+
+                        /**
+                         * need to add a check for if the item is signed in
+                         */
+                        setAssetCode(accBarcode);
+                        setSelectedItem(items.find(item => item.barcode === accBarcode));
+                        setScanProcess(2);
+                        
+                        if(isSignIn){
+                            setCurrentInstructions(signInInstructionText[2]);
+                        }
+                        else{
+                            setCurrentInstructions(signOutInstructionText[2]);
+                        }
+                    }
+
+                    else{
+                        //didn't scan at correct time
+                    }
+                   
 
                 } else if (employees.includes(employees.find(employee => employee.barcode === accBarcode))) {
-                    setEmployeeCode(accBarcode);
-                    setSelectedEmployee(employees.find(employee => employee.barcode === accBarcode));
+                    if(scanProcess===0){
+                        setScanProcess(1);
+                        setEmployeeCode(accBarcode);
+                        setSelectedEmployee(employees.find(employee => employee.barcode === accBarcode));
+                        if(isSignIn===false){
+                            setCurrentInstructions(signOutInstructionText[1]);
+                            
+                        }
+                        else{
+                            setCurrentInstructions(signInInstructionText[1]);
+                        }
+                    }
+
+                    else if(scanProcess===2){
+                        setEmployeeCode(accBarcode);
+                        setSelectedEmployee(employees.find(employee => employee.barcode === accBarcode));
+                    }
+
+                    else{
+                        setCurrentInstructions(mistakeText[1]);
+                    }
+                    
 
                 } else {
                     console.log("not found");
@@ -138,6 +185,14 @@ export default function ScanItemPage({handleSignOut}){
 
     }, [barcode]);
 
+    useEffect(() => {
+        if (selectedItem) {
+            setCurrentInstructions(isSignIn
+                ? `You have scanned item: ${selectedItem.serialNumber}. Please scan your badge again to confirm.`
+                : `You have scanned item: ${selectedItem.serialNumber}. Please scan your badge again to sign out.`);
+        }
+    }, [selectedItem, isSignIn]);
+    
     //check if can try item assignment
     useEffect(() => {
         if (assetCode !== "" && employeeCode !== "") { //if two valid codes were found
@@ -262,11 +317,51 @@ export default function ScanItemPage({handleSignOut}){
                     
                     <div className="col-sm-5 scanContainer mx-5 text-center" style={{minHeight:"50vh"}}>
 
-                        {isSignIn? <p className="display-5 scanText">{signInInstructionText[scanProcess]}</p>:<p>{signOutInstructionText[scanProcess]}</p> }
+                        <p className="display-5 scanText">{currentInstrcutions}</p>
                     </div>
-                    <div className="col-sm-5 scanContainer mx-5" style={{minHeight:"50vh"}}>
-                        {selectedItem==null? <p>no item selected</p>:<p>{selectedItem.itemName}</p>}  
+                    {selectedItem!==null?<div className="col-sm-5 mx-5 scanContainer justify-content-center" style={{maxHeight:"60vh", caretColor: 'transparent'}}>
+                        <div className="container">
+                            <div className="row justify-content-center" style={{ minHeight: '20vh', alignItems: 'center' }}>
+                                <div className="col-sm-10 d-flex justify-content-center" style={{ height: '100%' }}>
+                                    <img
+                                        src={selectedItem.image}
+                                        className={`img-fluid itemImage`}
+                                        alt="Item"
+                                        style={{ height: '100%', maxHeight: '20vh', width: 'auto' }} 
+                                    />
+                                </div>
+                            </div>
+                            <div className="row mb-3">
+                                <h4 className="display-6 text-center pt-2"><strong>{selectedItem.itemName}</strong></h4>
+                            </div>
+                            <div className="row">
+                                <div className="text-start">
+                                <p className="mb-0 px-5">Serial Number: {selectedItem.serialNumber}</p>
+                                <p className="mb-0 px-5">Status:  {selectedItem.status}</p>
+                                <p className="mb-0 px-5"> Date:  {selectedItem.dateTaken}</p>
+                                <p className="mb-0 px-5">Manufacturer:  {selectedItem.manufacturer}</p>
+                                <p className="mb-0 px-5">Holder:  {selectedItem.holder}</p>
+                                <p className="mb-0 px-5">Location:  {selectedItem.location}</p>
+                                </div>
+                            </div>
+        
+                            <div className="row mb-3 justify-content-center">
+                                <h5 className="text-center">Notes</h5>
+                                <textarea
+                                    className="form-control"
+                                    rows="4"
+                                    value={selectedItem.notes}
+                                    style={{ maxHeight: '20vh' , resize:'none', maxWidth: '45vh', caretColor: 'transparent'}} 
+                                    placeholder='Notes:'
+                                    disabled
+                                />
+                            </div>
+                        </div>
                     </div>
+                    
+                    :<div className="col-sm-5 mx-5"></div>
+                    }
+                    
                 </div>
             </div>  
         </div>
