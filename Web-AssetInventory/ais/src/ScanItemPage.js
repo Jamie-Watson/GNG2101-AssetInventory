@@ -31,35 +31,19 @@ export default function ScanItemPage({handleSignOut}){
           "Your asset has already been signed out",
            "Your asset has already been signed in"];
     
-<<<<<<< HEAD
         let signInInstructionText = [
             `Welcome, the system is ready to sign in items. If you wish to sign out items, click the "Sign Out Items" button above. <br><br>Please scan your badge to start.`,
             `You have scanned your badge, please scan the item you wish to sign in.`,
-            `You have scanned item: ${itemNumber}. Please scan your badge again to confirm.`,
+            `You have scanned item: ${barcode}. Please scan your badge again to confirm.`,
             `Item has been signed in. You are good to go.`
         ];
         
         let signOutInstructionText = [
             `Welcome, the system is ready to sign out items. If you wish to sign in items, click the "Sign In Items" button above. <br><br>Please scan your badge to start.`,
             `You have scanned your badge, please scan the item you wish to sign out.`,
-            `You have scanned item: ${itemNumber}. Please scan your badge again to confirm.`,
+            `You have scanned item: ${barcode}. Please scan your badge again to confirm.`,
             `Item has been signed out. You are good to go.`
         ];
-        
-=======
-    let signInInstructionText=[   "Welcome, the system is ready to sign in items. If you wish to sign out items, click the \"Sign Out Items\" button above \nPlease Scan your badge to start.",
-        "You have scanned your badge, please scan the item you wish to sign in.",
-        "You have scanned item: " + barcode + ". Please scan your badge again to confirm.",
-        "Item has been signed in. You are good to go."
-    ];
-
-    let signOutInstructionText=[   "Welcome, the system is ready to sign out items. If you wish to sign in items, click the \"Sign In Items\" button above. \nPlease Scan your badge to start.",
-        "You have scanned your badge, please scan the item you wish to sign out.",
-        "You have scanned item: "+ barcode +". Please scan your badge again to confirm.",
-        "Item has been signed out. You are good to go."
-    ];
-
->>>>>>> c1739cb7dbd1e3bf08dfade70476564327c33d7e
 
     const[currentInstrcutions, setCurrentInstructions]=useState(signInInstructionText[0]);
     //try this by character implementation function
