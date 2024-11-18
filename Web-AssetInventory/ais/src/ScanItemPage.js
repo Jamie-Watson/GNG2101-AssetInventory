@@ -1,4 +1,3 @@
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ScanPageNavbar from "./ScanPageNavbar";
 import "./SearchPage.css";
