@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import './SearchPage.css';
 import React from 'react';
 
-export default function ScanPageToggler({handleSignItemIn , handleSignItemOut}){
+export default function ScanPageToggler({handleSignItemIn , handleSignItemOut, isSignIn}){
 
     return(<nav className="navbar navbar-expand-lg navbar-light justify-content-center container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSearch" aria-controls="navbarSearch" aria-expanded="false" aria-label="Toggle navigation">

@@ -33,18 +33,20 @@ export default function ScanItemPage({handleSignOut}){
           "Your asset has already been signed out",
            "Your asset has already been signed in"];
     
-    let signInInstructionText=[   "Welcome, the system is ready to sign in items. If you wish to sign out items, click the \"Sign Out Items\" button above \nPlease Scan your badge to start.",
-        "You have scanned your badge, please scan the item you wish to sign in.",
-        "You have scanned item: " + itemNumber + ". Please scan your badge again to confirm.",
-        "Item has been signed in. You are good to go."
-    ];
-
-    let signOutInstructionText=[   "Welcome, the system is ready to sign out items. If you wish to sign in items, click the \"Sign In Items\" button above. \nPlease Scan your badge to start.",
-        "You have scanned your badge, please scan the item you wish to sign out.",
-        "You have scanned item: "+ itemNumber +". Please scan your badge again to confirm.",
-        "Item has been signed out. You are good to go."
-    ];
-
+        let signInInstructionText = [
+            `Welcome, the system is ready to sign in items. If you wish to sign out items, click the "Sign Out Items" button above. <br><br>Please scan your badge to start.`,
+            `You have scanned your badge, please scan the item you wish to sign in.`,
+            `You have scanned item: ${itemNumber}. Please scan your badge again to confirm.`,
+            `Item has been signed in. You are good to go.`
+        ];
+        
+        let signOutInstructionText = [
+            `Welcome, the system is ready to sign out items. If you wish to sign in items, click the "Sign In Items" button above. <br><br>Please scan your badge to start.`,
+            `You have scanned your badge, please scan the item you wish to sign out.`,
+            `You have scanned item: ${itemNumber}. Please scan your badge again to confirm.`,
+            `Item has been signed out. You are good to go.`
+        ];
+        
 
     const[currentInstrcutions, setCurrentInstructions]=useState(signInInstructionText[0]);
     //try this by character implementation function
@@ -338,13 +340,17 @@ export default function ScanItemPage({handleSignOut}){
             <ScanPageNavbar handleSignOut={handleSignOut}/>
             <div className="container backgroundContainer justify-content-center">
                 <div className="row justify-content-center">
-                    <ScanPageToggler handleSignItemIn={handleSignItemIn} handleSignItemOut={handleSignItemOut}/>
+                    <ScanPageToggler handleSignItemIn={handleSignItemIn} handleSignItemOut={handleSignItemOut} isSignIn={isSignIn}/>
                 </div>
                 <div className="row justify-content-center align-items-center h-100" style={{minHeight:"80vh"}}>
                     
-                    <div className="col-sm-5 scanContainer mx-5 text-center" style={{minHeight:"50vh"}}>
+                    <div className="col-sm-5 scanContainer mx-5 text-center align-items-center" style={{minHeight:"50vh"}}>
 
-                        <p className="display-5 scanText">{currentInstrcutions}</p>
+                    <p
+                        className="display-5 scanText"
+                        dangerouslySetInnerHTML={{ __html: currentInstrcutions }}
+                        />
+
                     </div>
                     {selectedItem!==null?<div className="col-sm-5 mx-5 scanContainer justify-content-center" style={{maxHeight:"60vh", caretColor: 'transparent'}}>
                         <div className="container">
