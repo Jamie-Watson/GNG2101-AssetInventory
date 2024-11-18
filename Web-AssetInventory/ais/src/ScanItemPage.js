@@ -50,13 +50,15 @@ export default function ScanItemPage({handleSignOut}){
     const handleSignItemIn =()=>{
         setIsSignIn(true);
         setScanProcess(0);
-        setCurrentInstructions(signInInstructionText[0]);    
+        setCurrentInstructions(signInInstructionText[0]);
+        clearFields();    
     }
 
     const handleSignItemOut =()=>{
         setIsSignIn(false);
         setScanProcess(0);
         setCurrentInstructions(signOutInstructionText[0]);    
+        clearFields();
     }
 
     useEffect(() => {
@@ -141,6 +143,7 @@ export default function ScanItemPage({handleSignOut}){
 
                 } else if (employees.includes(employees.find(employee => employee.barcode === accBarcode))) {
                     if(scanProcess===0){
+
                         setScanProcess(1);
                         setEmployeeCode(accBarcode);
                         setSelectedEmployee(employees.find(employee => employee.barcode === accBarcode));
@@ -154,8 +157,16 @@ export default function ScanItemPage({handleSignOut}){
                     }
 
                     else if(scanProcess===2){
-                        setEmployeeCode(accBarcode);
-                        setSelectedEmployee(employees.find(employee => employee.barcode === accBarcode));
+
+                        if(isSignIn){
+                            handleUncheckout();
+                        }
+                        else{
+                            handleAssignment();
+                        }
+
+                        setScanProcess(0);
+                        endText();
                     }
 
                     else{
@@ -173,6 +184,7 @@ export default function ScanItemPage({handleSignOut}){
             }
         };
 
+
         // listens for keydown event
         window.addEventListener('keydown', handleInput);
         
@@ -183,42 +195,55 @@ export default function ScanItemPage({handleSignOut}){
 
     }, [barcode]);
 
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    async function endText(){
+        if(isSignIn===false){
+            setCurrentInstructions(signOutInstructionText[3]);
+            await delay(5000);
+            setCurrentInstructions(signOutInstructionText[0]);
+        }
+        else{
+            setCurrentInstructions(signInInstructionText[3]);
+            await delay(5000);
+            setCurrentInstructions(signInInstructionText[0]);
+
+        }
+        clearFields();
+    }
+
     useEffect(() => {
         if (selectedItem) {
-            setCurrentInstructions(isSignIn
-                ? `You have scanned item: ${selectedItem.barcode}. Please scan your badge again to confirm.`
-                : `You have scanned item: ${selectedItem.barcode}. Please scan your badge again to sign out.`);
+
+            if(selectedItem.status=="Available"){
+
+                if(isSignIn===false){
+                    setCurrentInstructions(`You have scanned item: ${selectedItem.serialNumber}. Please scan your badge again to confirm.`)
+;                }
+                else{
+                    setCurrentInstructions(`Item: ${selectedItem.serialNumber} has already been brought back.`);
+                    setSelectedItem(null);
+                    setScanProcess(1);
+                }
+                
+            }
+
+            else{
+
+                if(isSignIn){
+                    setCurrentInstructions(`You have scanned item: ${selectedItem.serialNumber}. Please scan your badge again to confirm.`);
+                }
+                else{
+                    setCurrentInstructions(`Item: ${selectedItem.serialNumber} has already been taken out.`);
+                    setSelectedItem(null);
+                    setScanProcess(1);
+                }
+            }
+            
         }
     }, [selectedItem, isSignIn]);
     
-    //check if can try item assignment
-    useEffect(() => {
-        if (assetCode !== "" && employeeCode !== "") { //if two valid codes were found
-            if(selectedEmployee.heldItem === null) { //if selected employee is not holding an item
-                if(selectedItem.holder === null) { //if item is not held by another employee can do assignment
-                    
-                    handleAssignment();
-                    console.log("1");
-                } else {
-                    //error message: item held by another employee
-                    //this is most likely a mistake as if the asset is able to be scanned, then an another employee should not have it checked out
-                    //when this happens, maybe make option to remove it from them
-                    clearFields();
-                    console.log("2");
-                }
-            } else { //selected employee is holding an item
-                if (selectedItem.id === selectedEmployee.heldItem) { //if that item is same as selected item, option to uncheckout
-                  
-                    handleUncheckout();
-                    console.log("3");
-                } else {
-                    //error message: employee is holding a different item
-                    clearFields()
-                    console.log("4");
-                }
-            }
-        } 
-    });
+    
 
     // handle item assignment
     const handleAssignment = async() => {
@@ -249,7 +274,6 @@ export default function ScanItemPage({handleSignOut}){
             console.log("error assigning");
         }
 
-        clearFields();
     }
 
     const handleUncheckout = async() => {
@@ -278,13 +302,14 @@ export default function ScanItemPage({handleSignOut}){
             console.log("error un checking out");
         }
 
-        clearFields();
     }
 
     const clearFields = async() => {
         setAssetCode("");
         setEmployeeCode("");
         setBarcode("");
+        setSelectedEmployee(null);
+        setSelectedItem(null);
      
 
         // refresh item list
@@ -303,7 +328,7 @@ export default function ScanItemPage({handleSignOut}){
      */
 
     return(
-        <div className="container searchPageContainer mb-5">
+        <div className="container searchPageContainer mb-5" style={{caretColor: "transparent"}}>
             <ScanPageNavbar handleSignOut={handleSignOut}/>
             <div className="container backgroundContainer justify-content-center">
                 <div className="row justify-content-center">
