@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/GNG2101-AssetInventory/static/css/main.58aa8fcb.css",
-    "main.js": "/GNG2101-AssetInventory/static/js/main.8b50a64f.js",
+    "main.js": "/GNG2101-AssetInventory/static/js/main.b0138e0b.js",
     "static/js/453.a3413380.chunk.js": "/GNG2101-AssetInventory/static/js/453.a3413380.chunk.js",
     "static/media/hospital.png": "/GNG2101-AssetInventory/static/media/hospital.6e468456fad50ba91034.png",
     "static/media/ScanBackground.png": "/GNG2101-AssetInventory/static/media/ScanBackground.05f8e1397f7aa007d6b6.png",
@@ -10,11 +10,11 @@
     "static/media/no_image.png": "/GNG2101-AssetInventory/static/media/no_image.5eba04f705f272b7d53a.png",
     "index.html": "/GNG2101-AssetInventory/index.html",
     "main.58aa8fcb.css.map": "/GNG2101-AssetInventory/static/css/main.58aa8fcb.css.map",
-    "main.8b50a64f.js.map": "/GNG2101-AssetInventory/static/js/main.8b50a64f.js.map",
+    "main.b0138e0b.js.map": "/GNG2101-AssetInventory/static/js/main.b0138e0b.js.map",
     "453.a3413380.chunk.js.map": "/GNG2101-AssetInventory/static/js/453.a3413380.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.58aa8fcb.css",
-    "static/js/main.8b50a64f.js"
+    "static/js/main.b0138e0b.js"
   ]
 }
