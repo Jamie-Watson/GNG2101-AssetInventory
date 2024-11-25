@@ -6,6 +6,7 @@ export default function InstructionPageBubble(){
     const scanningMessage="Click to enter scanning mode and detect new items for inventory";
     const signoutMessage="Browse and edit the inventory";
     const editSearchMessage="Log out of the system securely to end your session";
+    const githubLinkMessage="For any additional setup issues see documentation at: https://github.com/Jamie-Watson/GNG2101-AssetInventory"
 
     return(
         <div className="container justify-content-center noCursor bubble text-center">
@@ -16,6 +17,7 @@ export default function InstructionPageBubble(){
                     <p className="mediumTextStyle text-start">{scanningMessage}</p>
                     <p className="mediumTextStyle text-start">{signoutMessage}</p>
                     <p className="mediumTextStyle text-start">{editSearchMessage}</p>
+                    <a href="https://github.com/Jamie-Watson/GNG2101-AssetInventory" className="mediumTextStyle text-start">{githubLinkMessage}</a>
                 </div>
             </div>
         </div>
