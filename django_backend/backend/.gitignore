@@ -1,0 +1,5 @@
+#python byte compiled files
+__pycache__/
+*.pyc
+db.sqlite3
+media
