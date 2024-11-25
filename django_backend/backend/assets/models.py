@@ -8,8 +8,6 @@ from barcode.writer import ImageWriter
 from django.core.files.base import ContentFile
 from io import BytesIO
 
-from django.utils import timezone
-
 # class for representing an asset
 # not all attributes are implemented yet
 def create_barcode_image(barcode):
@@ -34,7 +32,6 @@ class Item(models.Model):
     status = models.CharField(default = 'Available', max_length = 255)
     notes = models.TextField(default = None, null = True, max_length = 500)
     dateTaken = models.DateField(default = None, null = True, blank = True)
-    timeTaken = models.DateTimeField(default = timezone.now, null = True, blank = True)
     expirationDate = models.DateField(default = None, null = True, blank = True)
     image = models.ImageField(upload_to = 'photos/', null = True, blank = True)
 
