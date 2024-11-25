@@ -92,7 +92,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://aim_db_u48q_user:DPYLKXiCrDHAlP5raHd4fxGep4Teu28X@dpg-ct2d69lds78s73auarig-a.ohio-postgres.render.com:5432/AIM_DB'
+        default=os.getenv('DATABASE_URL')
     )
 }
 
