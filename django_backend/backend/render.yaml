@@ -1,0 +1,22 @@
+databases:
+  - name: AIM_DB
+    plan: free
+    databaseName: mysite
+    user: aim_db_u48q_user
+
+services:
+  - type: web
+    plan: free
+    name: AIM_BACKEND
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn mysite.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: AIM_DB
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
