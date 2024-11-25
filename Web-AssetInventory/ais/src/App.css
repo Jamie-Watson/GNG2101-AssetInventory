@@ -59,6 +59,13 @@ p.mediumTextStyle{
   color: #384959;
 
 }
+
+a.mediumTextStyle{
+  font-weight: 300;
+  font-size:medium;
+  color: #384959;
+
+}
 .signInPageBackground{
   background-image: url('Images/doctors.png');
   background-size: cover; 
