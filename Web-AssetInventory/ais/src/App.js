@@ -98,8 +98,7 @@ function ScanItemPageWithLock({ username, handleSignOut }) {
 
   return (
     <ScanItemPage
-      username={username}
-      handleSignOut={handleSignOut}
+      username={username} handleSignOutApp={handleSignOut}
     />
   );
 }

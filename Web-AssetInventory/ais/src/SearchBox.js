@@ -186,7 +186,7 @@ export default function SearchBox() {
     };
 
     return (
-        <div className="row">
+        <div className="row" style={{caretColor: "clear"}}>
             <div className="col-lg-6 px-5 pb-2">
                 <div className="container searchBox py-5">
                     <input

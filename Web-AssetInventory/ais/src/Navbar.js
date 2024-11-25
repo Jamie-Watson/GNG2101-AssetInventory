@@ -11,7 +11,7 @@ export default function Navbar({ username, handleSignOut }) {
   const handleNavigateToScan = () => navigate('/scan');
 
   return (
-    <nav className="navbar navbar-expand-md navbar-light container-fluid d-flex justify-content-center noCursor">
+    <nav className="navbar navbar-expand-lg navbar-light container-fluid d-flex justify-content-center noCursor">
       <button
         className="navbar-toggler"
         type="button"

@@ -13,6 +13,7 @@
     background-color: #81B2e2 ;
     min-width: 170px;
     border-color: #81B2e2;
+    transition: all 0.3s ease;
 }
 
 .addRemoveButton:hover{
@@ -21,6 +22,14 @@
     border-color:#6A9BC4;
 }
 
+.addRemoveButton.active {
+    background-color: #4A85B0; 
+    border-color: #4A85B0;
+    color: white;
+    font-weight: bold; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+    transform: scale(1.05);
+}
 .result-container {
     max-height: 45vh;
     overflow-y: auto; 
@@ -73,13 +82,62 @@
 }
 
 .searchButton {
-    background-color: #e0e0e0; /* Original background color */
-    color: #333333; /* Dark gray text color for legibility */
-    border: 2px solid #ccc; /* Optional: add a border for better definition */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+    background-color: #e0e0e0; 
+    color: #333333; 
+    border: 2px solid #ccc; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
 }
 .searchButton:hover {
-    background-color: #b0b0b0; /* Lighter background color on hover */
-    border: 2px solid #ccc; /* Optional: add a border for better definition */
-    color: #000000; /* Black text color on hover for better visibility */
+    background-color: #b0b0b0; 
+    border: 2px solid #ccc; 
+    color: #000000; 
+}
+
+.overlay {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup {
+    background-color: rgba(249, 249, 249, 0.75); 
+    padding: 10px;
+    max-height: 45vh;          
+    overflow-y: auto;          
+    display: flex;
+    flex-direction: column;     
+    justify-content: center;    
+    align-items: center;       
+    flex-wrap: wrap;            
+    border: 1px solid #ddd;    
+    width: 100%;                
+    max-width: 400px;           
+    text-align: center;  
+    border-radius: 8px;       
+}
+
+.popup h6 {
+    margin: 0;
+    padding: 0;
+    text-align: center;         
+    width: 100%;                
+}
+
+  .popup-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+.alert-info {
+    background-color: #bdddfc;
+    color: #384959;
+    border: 2px solid #88bdf2; 
+    padding: 15px;
+    border-radius: 5px;
 }

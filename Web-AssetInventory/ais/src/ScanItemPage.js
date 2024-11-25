@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ScanPageToggler from './ScanPageToggler';
 
-export default function ScanItemPage({handleSignOut}){
+export default function ScanItemPage({username, handleSignOutApp}){
 
     //database info storage
     const [items, setItems] = useState([]);
@@ -25,6 +25,8 @@ export default function ScanItemPage({handleSignOut}){
     const [isSignIn, setIsSignIn]=useState(false);
     
     const[scanProcess, setScanProcess] = useState(0);
+
+    const[trySignOut, setTrySignOut]=useState(false);
 
     let mistakeText=["Please ensure that you are scanning your badge",
          "Please ensure that you are scanning your asset",
@@ -45,7 +47,7 @@ export default function ScanItemPage({handleSignOut}){
             `Item has been signed out. You are good to go.`
         ];
 
-    const[currentInstrcutions, setCurrentInstructions]=useState(signInInstructionText[0]);
+    const[currentInstrcutions, setCurrentInstructions]=useState(signOutInstructionText[0]);
     //try this by character implementation function
 
     const handleSignItemIn =()=>{
@@ -103,97 +105,73 @@ export default function ScanItemPage({handleSignOut}){
     }, [])
 
     useEffect(() => {
-
         const handleInput = (e) => {
-
-            //scan and put each character into barcode temp variable
             if (e.key !== "Enter") {
                 setBarcode((prevBarcode) => prevBarcode + e.key);
             }
-
-            //when enter is pressed, barcode is done scanning
+    
             if (e.key === "Enter") {
-
-                //take only last 8 inputted values, ensures that if other buttons are pressed they are ignored
                 const accBarcode = barcode.slice(-8);
-
-                //based on existing barcodes, save it to correct variable
-                if (items.includes(items.find(item => item.barcode === accBarcode))) {
-
-                    if(scanProcess===1){
-
-                        /**
-                         * need to add a check for if the item is signed in
-                         */
-                        setAssetCode(accBarcode);
-                        setSelectedItem(items.find(item => item.barcode === accBarcode));
-                        setScanProcess(2);
-                        
-                        if(isSignIn){
+    
+                if (items.find((item) => item.barcode === accBarcode)) {
+                    // Item barcode scanned
+                    if (scanProcess === 1) {
+                        const item = items.find((item) => item.barcode === accBarcode);
+                        if (isSignIn && item.status === "Checked Out") {
+                            setAssetCode(accBarcode);
+                            setSelectedItem(item);
+                            setScanProcess(2);
                             setCurrentInstructions(signInInstructionText[2]);
-                        }
-                        else{
+                        } else if (!isSignIn && item.status === "Available") {
+                            setAssetCode(accBarcode);
+                            setSelectedItem(item);
+                            setScanProcess(2);
                             setCurrentInstructions(signOutInstructionText[2]);
+                        } else {
+                            // Handle cases when item is already signed in or out incorrectly
+                            setCurrentInstructions(
+                                isSignIn ? mistakeText[3] : mistakeText[2]
+                            );
                         }
-                    }
-
-                    else{
-                        //didn't scan at correct time
-                    }
-                   
-
-                } else if (employees.includes(employees.find(employee => employee.barcode === accBarcode))) {
-                    if(scanProcess===0){
-
-                        setScanProcess(1);
-                        setEmployeeCode(accBarcode);
-                        setSelectedEmployee(employees.find(employee => employee.barcode === accBarcode));
-                        if(isSignIn===false){
-                            setCurrentInstructions(signOutInstructionText[1]);
-                            
-                        }
-                        else{
-                            setCurrentInstructions(signInInstructionText[1]);
-                        }
-                    }
-
-                    else if(scanProcess===2){
-
-                        if(isSignIn){
-                            handleUncheckout();
-                        }
-                        else{
-                            handleAssignment();
-                        }
-
-                        setScanProcess(0);
-                        endText();
-                    }
-
-                    else{
+                    } else {
+                        // Item scanned out of order
                         setCurrentInstructions(mistakeText[1]);
                     }
-                    
-
+                } else if (employees.find((employee) => employee.barcode === accBarcode)) {
+                    // Employee badge scanned
+                    const employee = employees.find((employee) => employee.barcode === accBarcode);
+                    if (scanProcess === 0) {
+                        setEmployeeCode(accBarcode);
+                        setSelectedEmployee(employee);
+                        setScanProcess(1);
+                        setCurrentInstructions(
+                            isSignIn ? signInInstructionText[1] : signOutInstructionText[1]
+                        );
+                    } else if (scanProcess === 2) {
+                        // Final confirmation with badge
+                        if (isSignIn) {
+                            handleUncheckout();
+                        } else {
+                            handleAssignment();
+                        }
+                        setScanProcess(0);
+                        endText();
+                    } else {
+                        // Badge scanned out of order
+                        setCurrentInstructions(mistakeText[0]);
+                    }
                 } else {
-                    console.log("not found");
+                    // Barcode not recognized
+                    setCurrentInstructions("This barcode is not recognized.");
                 }
-
-                //reset holder state
-                setBarcode("");
-
+                setBarcode(""); // Reset barcode holder
             }
         };
-
-
-        // listens for keydown event
-        window.addEventListener('keydown', handleInput);
-        
-        // clean up event listener, ready for next key
+    
+        window.addEventListener("keydown", handleInput);
         return () => {
-            window.removeEventListener('keydown', handleInput);
+            window.removeEventListener("keydown", handleInput);
         };
-
     }, [barcode]);
 
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -244,7 +222,13 @@ export default function ScanItemPage({handleSignOut}){
         }
     }, [selectedItem, isSignIn]);
     
+    const handleSignOutButton =()=>{
+        setTrySignOut(true); 
+    }
     
+    const handleSignOut=()=>{
+        handleSignOutApp();
+    }
 
     // handle item assignment
     const handleAssignment = async() => {
@@ -322,7 +306,36 @@ export default function ScanItemPage({handleSignOut}){
         setEmployees(res2.data);
     }
     
+    const killProcess=()=>{
+        isSignIn? handleSignItemIn():handleSignItemOut();
+    }
 
+
+    //shortcutsss woowoo
+    useEffect(() => {
+        const handleShortcut = (e) => {
+            if (e.ctrlKey && e.key === "x") {
+                e.preventDefault(); 
+                killProcess();
+            }
+
+            else if (e.ctrlKey && e.shiftKey && e.key === "+") {
+                e.preventDefault();
+                handleSignItemIn();
+            }
+    
+            else if (e.ctrlKey && e.key === "-") {
+                e.preventDefault();
+                handleSignItemOut();
+            }
+        };
+    
+        window.addEventListener("keydown", handleShortcut);
+        return () => {
+            window.removeEventListener("keydown", handleShortcut);
+        };
+    }, []);
+    
     /**
      * need to add assignment for when both an asset and employee are scanned
      * check for if the employee already has asset, if it is that asset, if so then option to un check out
@@ -330,21 +343,21 @@ export default function ScanItemPage({handleSignOut}){
 
     return(
         <div className="container searchPageContainer mb-5" style={{caretColor: "transparent"}}>
-            <ScanPageNavbar handleSignOut={handleSignOut}/>
+            <ScanPageNavbar handleSignOut={handleSignOutButton}/>
             <div className="container backgroundContainer justify-content-center">
                 <div className="row justify-content-center">
                     <ScanPageToggler handleSignItemIn={handleSignItemIn} handleSignItemOut={handleSignItemOut} isSignIn={isSignIn}/>
                 </div>
                 <div className="row justify-content-center align-items-center h-100" style={{minHeight:"80vh"}}>
-                    
-                    <div className="col-sm-5 scanContainer mx-5 text-center align-items-center" style={{minHeight:"50vh"}}>
 
+                <div className="col-sm-5 scanContainer mx-5 text-center align-items-center" style={{ minHeight: "50vh", position: "relative" }}>
+                <button className="btn btn-danger position-absolute top-0 start-0 m-2" onClick={killProcess}>{isSignIn? "Cancel Asset Sign In": "Cancel Asset Sign Out"}</button>
                     <p
                         className="display-5 scanText"
                         dangerouslySetInnerHTML={{ __html: currentInstrcutions }}
-                        />
+                    />
+                </div>
 
-                    </div>
                     {selectedItem!==null?<div className="col-sm-5 mx-5 scanContainer justify-content-center" style={{maxHeight:"60vh", caretColor: 'transparent'}}>
                         <div className="container">
                             <div className="row justify-content-center" style={{ minHeight: '20vh', alignItems: 'center' }}>
@@ -388,6 +401,22 @@ export default function ScanItemPage({handleSignOut}){
                     }
                     
                 </div>
+                {trySignOut && (
+                    <div className="col-lg-6 px-5 pb-5">
+                        <div className="overlay text-currentUsername">
+                            <div className="popup text-center">
+                                <h6 className="display-6 removeItemLabel pb-3">
+                                    <strong>Are you sure?</strong>
+                                </h6>
+                                <p>This action can only be undone by an admin. Do you want to proceed?</p>
+                                <div className="popup-actions">
+                                    <button className="btn btn-dark" onClick={() => setTrySignOut(false)}>No</button>
+                                    <button className="btn btn-danger" onClick={handleSignOut}>Sign Out</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>  
         </div>
         

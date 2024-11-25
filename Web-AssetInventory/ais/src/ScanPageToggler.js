@@ -12,10 +12,24 @@ export default function ScanPageToggler({handleSignItemIn , handleSignItemOut, i
         <div className="collapse navbar-collapse justify-content-center" id="navbarSearch">
             <ul className="navbar-nav justify-content-center text-center">
                 <li className="nav-item active mx-5 justify-content-center">
-                    <button className="btn btn-primary addRemoveButton my-3" href="#" onClick={handleSignItemIn}>Sign In Items</button>
+                <button
+                        className={`btn my-3 addRemoveButton ${
+                            isSignIn ? "active" : ""
+                        }`}
+                        onClick={handleSignItemIn}
+                    >
+                        Sign In Items
+                    </button>
                 </li>
                 <li className="nav-item active mx-5 justify-content-center">
-                    <button className="btn btn-primary addRemoveButton my-3" href="#" onClick={handleSignItemOut}>Sign Out Items</button>
+                    <button
+                        className={`btn my-3 addRemoveButton ${
+                            !isSignIn ? "active" : ""
+                        }`}
+                        onClick={handleSignItemOut}
+                    >
+                        Sign Out Items
+                    </button>
                 </li>
             </ul>
         </div>
