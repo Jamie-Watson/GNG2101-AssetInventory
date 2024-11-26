@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     # add api page, if go to this page you can find all routes 
-    path('api/', include('backend.api.urls'))
+    path('api/', include('backend.api.urls')),
+    path('', TemplateView.as_view(template_name='index.html')),
 ]
 
 if settings.DEBUG:

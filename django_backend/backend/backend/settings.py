@@ -137,6 +137,7 @@ if DEBUG:
 else:
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Add this for production
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/build/static')]
 
 # WhiteNoise handling for static files in production
 if not DEBUG:
