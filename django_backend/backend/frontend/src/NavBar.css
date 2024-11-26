@@ -1,0 +1,15 @@
+
+
+.btn-primary.lightBlueButton{
+    background-color: #d9e8fd ;
+    color: #384959;
+    border: #bdddfc;
+    padding: 10px 20px;
+    min-width: 170px;
+  }
+  
+.btn-primary.lightBlueButton:hover{
+    background-color: #bdddfc ;
+    color: #384959;
+    border: #88bdf2;
+}

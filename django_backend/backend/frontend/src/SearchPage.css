@@ -1,0 +1,85 @@
+.blueContainer{
+    background-color: #b6c6d4 ;
+    min-height: 80vh;
+    border-radius: 8px;
+}
+.searchPageContainer{
+    background-color: #FCFCFC ;
+    min-height: 100vh;
+    min-width: 100%;
+}
+
+.addRemoveButton{
+    background-color: #81B2e2 ;
+    min-width: 170px;
+    border-color: #81B2e2;
+}
+
+.addRemoveButton:hover{
+    background-color: #6A9BC4 ;
+    min-width: 170px;
+    border-color:#6A9BC4;
+}
+
+.result-container {
+    max-height: 45vh;
+    overflow-y: auto; 
+    display: flex;
+    flex-wrap: wrap; 
+    padding: 10px; 
+    border: 1px solid #ddd; 
+    background-color: #f9f9f9; 
+}
+
+.btn-lg {
+    font-size: 1.25rem; 
+    padding: 10px 20px;
+}
+
+.searchBox{
+    background-color: #FCFCFC;
+    min-height:65vh;
+    max-height:65vh;
+    border-radius: 8px;
+}
+
+.editButton{
+    background-color: #b6c6d4 ;
+    border-radius: 18px;
+    border-color: #b6c6d4;
+}
+
+.editButton:hover{
+    background-color: #8ab8e0;
+    border-radius: 18px;
+    border-color: #8ab8e0;
+}
+
+.itemImage{
+    height: 100%;
+    width: 100%;
+    object-fit: 'contain';
+    border-radius: 8px;
+    transition: opacity 0.3s ease;
+}
+
+.itemImage:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.removeItemLabel{
+    font-size: calc(1rem + 1vw);
+}
+
+.searchButton {
+    background-color: #e0e0e0; /* Original background color */
+    color: #333333; /* Dark gray text color for legibility */
+    border: 2px solid #ccc; /* Optional: add a border for better definition */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effect */
+}
+.searchButton:hover {
+    background-color: #b0b0b0; /* Lighter background color on hover */
+    border: 2px solid #ccc; /* Optional: add a border for better definition */
+    color: #000000; /* Black text color on hover for better visibility */
+}

@@ -1,0 +1,92 @@
+.noCursor{
+  caret-color: transparent;
+}
+
+.lightBlueBackground{
+  background-color: #bdddfc;
+}
+
+.form-control.lightBlueBackground {
+  background-color: #bdddfc ;
+  color: #384959;  
+}
+
+.form-control.lightBlueBackground:focus{
+  background-color: #88bdf2 ;
+  color: #384959;
+}
+
+.form-control.lightBlueBackground::placeholder{
+  background-color: #bdddfc ;
+  color: #384959;
+  font-size: 12px;
+}
+
+.btn-primary.lightBlueButton{
+  background-color: #d9e8fd ;
+  color: #384959;
+  border: #bdddfc;
+}
+
+.btn-primary.lightBlueButton:hover{
+  background-color: #bdddfc ;
+  color: #384959;
+  border: #88bdf2;
+}
+
+p.display-5.textStyle{
+  font-size:medium;
+  color: #384959;
+}
+
+p.smallTextStyle{
+  font-weight: 300;
+  font-size:small;
+  color: #384959;
+
+}
+
+p.largeTextStyle{
+  font-weight: 300;
+  font-size:large;
+  color: #384959;
+
+}
+
+p.mediumTextStyle{
+  font-weight: 300;
+  font-size:medium;
+  color: #384959;
+
+}
+.signInPageBackground{
+  background-image: url('Images/doctors.png');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  height: 100vh; 
+  width: 100%; 
+}
+
+.instructionPageBackground{
+  background-image: url('Images/hospital.png');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  height: 100vh; 
+  width: 100%; 
+}
+
+.bubble{
+  border-color: #d6d6d6;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 10px;
+  background-color: #fcfcfc;
+
+}
+
+p.display-5.scanText{
+  font-size:x-large;
+  color: #384959;
+}

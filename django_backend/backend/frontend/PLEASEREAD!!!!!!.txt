@@ -1,0 +1,6 @@
+you may need to install react + bootstrap dependencies using npm before running:
+
+
+-"npm run start" in the command line when in the same directory as the ais app
+
+I still need to figure out how to run this everywhere without pushing 40,000 files worth of helper modules
