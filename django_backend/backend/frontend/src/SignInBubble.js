@@ -21,7 +21,7 @@ export default function SignInBubble({ onSignIn }) {
 
         //for each admin in admins
         for (var admin of admins) {
-            if (email==admin.email && password==admin.password) {
+            if (email===admin.email && password===admin.password) {
                 onSignIn(email);
             }
         }

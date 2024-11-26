@@ -73,7 +73,7 @@ export default function AddItem(){
 
         try {
             // send POST request to django
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}assets/`, formData)
+            await axios.post(`${process.env.REACT_APP_API_URL}assets/`, formData);
             setVerificationMessage(`Item "${itemName}" was added.`);
 
             // reset fields

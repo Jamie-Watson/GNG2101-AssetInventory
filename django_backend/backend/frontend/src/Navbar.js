@@ -28,7 +28,3 @@ export default function Navbar({ username, handleSignOut, handleSearch, handleSc
         </nav>
     );
 }
-
-function handleSignInClick() {
-    return;
-}

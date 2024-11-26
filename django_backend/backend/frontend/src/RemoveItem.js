@@ -8,7 +8,6 @@ import { useState , useEffect } from 'react';
 export default function RemoveItem(){
 
     const [items, setItems] = useState([]);
-    const [itemName, setItemName] = useState('');
     const [verificationMessage, setVerificationMessage] = useState('');
     const [serialNumber, setSerialNumber] = useState('');
 
@@ -56,7 +55,7 @@ export default function RemoveItem(){
             const nameOfItem = toDelete.itemName;
             
             // try delete
-            const res = await axios.delete(`${process.env.REACT_APP_API_URL}assets/${toDelete.id}/`);
+            await axios.delete(`${process.env.REACT_APP_API_URL}assets/${toDelete.id}/`);
             setVerificationMessage(`Item "${nameOfItem}" was deleted.`);
 
             // if error deleting
