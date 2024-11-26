@@ -34,6 +34,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['gng2101-assetinventory.onrender.com']
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',  # Local dev URL
+    'https://gng2101-assetinventory.onrender.com',  # Production URL
+]
 
 
 # Application definition
